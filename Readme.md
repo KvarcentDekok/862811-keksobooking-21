@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Павел Хапрянинов](https://up.htmlacademy.ru/javascript/21/user/862811).
-* Наставник: `Неизвестно`.
+* Наставник: [Альбина Токарчук](https://up.htmlacademy.ru/javascript/21/user/167491).
 
 ---
 
