@@ -1,6 +1,20 @@
 "use strict";
 
+const NUMBER_OF_OFFERS = 8;
+const LOCATION_Y_MIN = 130;
+const LOCATION_Y_MAX = 630;
+const PIN_WIDTH = 50;
+const PIN_HEIGHT = 70;
+
 const mapBlock = document.querySelector(`.map`);
+const offerTypes = [`palace`, `flat`, `house`, `bungalow`];
+const offerTimes = [`12:00`, `13:00`, `14:00`];
+const offerPossibleFeatures = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
+const offerPossiblePhotos = [
+  `http://o0.github.io/assets/images/tokyo/hotel1.jpg`,
+  `http://o0.github.io/assets/images/tokyo/hotel2.jpg`,
+  `http://o0.github.io/assets/images/tokyo/hotel3.jpg`
+];
 const offers = createOffers();
 
 function getRandomInt(min, max) {
@@ -11,14 +25,6 @@ function getRandomInt(min, max) {
 
 function getRandomElement(array) {
   return array[getRandomInt(0, array.length - 1)];
-}
-
-function getRandomUniqueElement(array) {
-  const index = getRandomInt(0, array.length - 1);
-  const element = array[index];
-
-  array.splice(index, 1);
-  return element;
 }
 
 function getRandomArray(array, length) {
@@ -32,20 +38,7 @@ function getRandomArray(array, length) {
 }
 
 function createOffers() {
-  const NUMBER_OF_OFFERS = 8;
-  const LOCATION_Y_MIN = 130;
-  const LOCATION_Y_MAX = 630;
-
   const result = [];
-  const avatarNumbers = [`01`, `02`, `03`, `04`, `05`, `06`, `07`, `08`];
-  const offerTypes = [`palace`, `flat`, `house`, `bungalow`];
-  const offerTimes = [`12:00`, `13:00`, `14:00`];
-  const offerPossibleFeatures = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
-  const offerPossiblePhotos = [
-    `http://o0.github.io/assets/images/tokyo/hotel1.jpg`,
-    `http://o0.github.io/assets/images/tokyo/hotel2.jpg`,
-    `http://o0.github.io/assets/images/tokyo/hotel3.jpg`
-  ];
 
   for (let i = 0; i < NUMBER_OF_OFFERS; i++) {
     const numberOfFeatures = getRandomInt(0, offerPossibleFeatures.length - 1);
@@ -57,19 +50,20 @@ function createOffers() {
 
     result[i] = {
       "author": {
-        "avatar": `img/avatars/user${getRandomUniqueElement(avatarNumbers)}.png`
+        "avatar": `img/avatars/user0${i + 1}.png`
       },
       "offer": {
-        "title": `Загололвок предложения`,
+        "title": `Жильё мечты`,
         "address": `${location.x}, ${location.y}`,
-        "price": 20000,
+        "price": getRandomInt(10000, 100000),
         "type": getRandomElement(offerTypes),
-        "rooms": 3,
-        "guests": 20,
+        "rooms": getRandomInt(1, 4),
+        "guests": getRandomInt(1, 20),
         "checkin": getRandomElement(offerTimes),
         "checkout": getRandomElement(offerTimes),
         "features": getRandomArray(offerPossibleFeatures, numberOfFeatures),
-        "description": `Описание`,
+        "description": `Центральное отопление, счетчики на все установлены. Не требует ремонта.
+         Застекленная лоджия, 6 метров, сделана под ключ, подходит для расширения комнаты.`,
         "photos": getRandomArray(offerPossiblePhotos, numberOfPhotos)
       },
       "location": {
@@ -83,14 +77,11 @@ function createOffers() {
 }
 
 function createPin(offer, pinTemplate) {
-  const OFFSET_X = 25;
-  const OFFSET_Y = 70;
-
   const pinElement = pinTemplate.cloneNode(true);
   const pinAvatar = pinElement.querySelector(`img`);
 
-  pinElement.style.left = `${offer.location.x - OFFSET_X}px`;
-  pinElement.style.top = `${offer.location.y - OFFSET_Y}px`;
+  pinElement.style.left = `${offer.location.x - PIN_WIDTH / 2}px`;
+  pinElement.style.top = `${offer.location.y - PIN_HEIGHT}px`;
   pinAvatar.src = offer.author.avatar;
   pinAvatar.alt = offer.offer.title;
 
@@ -109,5 +100,6 @@ function addPins() {
   mapPinsBlock.appendChild(pinsFragment);
 }
 
-addPins();
 mapBlock.classList.remove(`map--faded`);
+
+addPins();
