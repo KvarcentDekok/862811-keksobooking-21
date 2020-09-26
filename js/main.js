@@ -7,20 +7,6 @@ const PIN_WIDTH = 50;
 const PIN_HEIGHT = 70;
 
 const offerTypes = [`palace`, `flat`, `house`, `bungalow`];
-const offerTypesLocal = {
-  palace: {
-    ru: `Дворец`
-  },
-  flat: {
-    ru: `Квартира`
-  },
-  house: {
-    ru: `Дом`
-  },
-  bungalow: {
-    ru: `Бунгало`
-  }
-};
 const offerTimes = [`12:00`, `13:00`, `14:00`];
 const offerPossibleFeatures = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
 const offerPossiblePhotos = [
@@ -117,41 +103,20 @@ function createCard(offer, cardTemplate) {
   const cardFeatures = cardElement.querySelector(`.popup__features`);
   const cardDescription = cardElement.querySelector(`.popup__description`);
   const cardPhotos = cardElement.querySelector(`.popup__photos`);
-  const cardPhoto = cardPhotos.querySelector(`.popup__photo`);
   const cardAvatar = cardElement.querySelector(`.popup__avatar`);
   const {title, address, price, type, rooms, guests, checkin, checkout, features, description, photos} = offer.offer;
 
   cardTitle.textContent = title;
   cardAddress.textContent = address;
   cardPrice.textContent = `${price}₽/ночь`;
-  cardType.textContent = offerTypesLocal[type].ru;
   cardCapacity.textContent = `${rooms} комнаты для ${guests} гостей`;
   cardTime.textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
-
-  for (let i = 0; i < features.length; i++) {
-    const feature = cardFeatures.querySelector(`.popup__feature--${features[i]}`);
-
-    feature.textContent = features[i];
-  }
-
-  for (let i = 0; i < cardFeatures.children.length; i++) {
-    if (cardFeatures.children[i].textContent === ``) {
-      cardFeatures.children[i].classList.add(`hidden`);
-    }
-  }
-
   cardDescription.textContent = description;
-
-  if (photos.length === 0) {
-    cardPhoto.classList.add(`hidden`);
-  } else if (photos.length === 1) {
-    cardPhoto.src = photos[0];
-  } else if (photos.length > 1) {
-    cardPhoto.src = photos[0];
-    addPhotos(cardPhoto, cardPhotos, photos);
-  }
-
   cardAvatar.src = offer.author.avatar;
+
+  makeType(type, cardType);
+  makeFeatures(features, cardFeatures);
+  addPhotos(photos, cardPhotos);
 
   return cardElement;
 }
@@ -176,14 +141,28 @@ function addPins() {
   mapPinsBlock.appendChild(pinsFragment);
 }
 
-function addPhotos(photoTemplate, cardPhotos, photos) {
-  const photosFragment = document.createDocumentFragment();
+function addPhotos(photos, cardPhotos) {
+  const photoTemplate = cardPhotos.querySelector(`.popup__photo`);
 
-  for (let i = 1; i < photos.length; i++) {
-    photosFragment.appendChild(createPhoto(photos[i], photoTemplate));
+  if (photos.length === 0) {
+    photoTemplate.classList.add(`hidden`);
+  } else if (photos.length === 1) {
+    photoTemplate.src = photos[0];
+  } else {
+    const photosFragment = document.createDocumentFragment();
+
+    for (let i = 0; i < photos.length; i++) {
+      if (i === 0) {
+        photoTemplate.src = photos[i];
+      } else {
+        photosFragment.appendChild(createPhoto(photos[i], photoTemplate));
+      }
+    }
+
+    if (photosFragment.children.length) {
+      cardPhotos.appendChild(photosFragment);
+    }
   }
-
-  cardPhotos.appendChild(photosFragment);
 }
 
 function addCard() {
@@ -191,6 +170,36 @@ function addCard() {
   const filtersContainer = mapBlock.querySelector(`.map__filters-container`);
 
   mapBlock.insertBefore(createCard(offers[0], cardTemplate), filtersContainer);
+}
+
+function makeFeatures(features, cardFeatures) {
+  for (let i = 0; i < features.length; i++) {
+    const feature = cardFeatures.querySelector(`.popup__feature--${features[i]}`);
+
+    feature.textContent = features[i];
+  }
+
+  for (let i = 0; i < cardFeatures.children.length; i++) {
+    if (cardFeatures.children[i].textContent === ``) {
+      cardFeatures.children[i].classList.add(`hidden`);
+    }
+  }
+}
+
+function makeType(type, cardType) {
+  switch (type) {
+    case `palace`:
+      cardType.textContent = `Дворец`;
+      break;
+    case `flat`:
+      cardType.textContent = `Квартира`;
+      break;
+    case `house`:
+      cardType.textContent = `Дом`;
+      break;
+    case `bungalow`:
+      cardType.textContent = `Бунгало`;
+  }
 }
 
 mapBlock.classList.remove(`map--faded`);
