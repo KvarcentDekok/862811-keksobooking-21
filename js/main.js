@@ -17,6 +17,8 @@ const offerPossiblePhotos = [
 const mapBlock = document.querySelector(`.map`);
 const offers = createOffers();
 
+console.log(offers[0]);
+
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -142,26 +144,19 @@ function addPins() {
 }
 
 function addPhotos(photos, cardPhotos) {
-  const photoTemplate = cardPhotos.querySelector(`.popup__photo`);
-
-  if (photos.length === 0) {
-    photoTemplate.classList.add(`hidden`);
-  } else if (photos.length === 1) {
-    photoTemplate.src = photos[0];
-  } else {
+  if (photos.length) {
+    const photoTemplate = cardPhotos.querySelector(`.popup__photo`);
     const photosFragment = document.createDocumentFragment();
 
+    photoTemplate.remove();
+
     for (let i = 0; i < photos.length; i++) {
-      if (i === 0) {
-        photoTemplate.src = photos[i];
-      } else {
-        photosFragment.appendChild(createPhoto(photos[i], photoTemplate));
-      }
+      photosFragment.appendChild(createPhoto(photos[i], photoTemplate));
     }
 
-    if (photosFragment.children.length) {
-      cardPhotos.appendChild(photosFragment);
-    }
+    cardPhotos.appendChild(photosFragment);
+  } else {
+    cardPhotos.classList.add(`hidden`);
   }
 }
 
@@ -173,16 +168,23 @@ function addCard() {
 }
 
 function makeFeatures(features, cardFeatures) {
-  for (let i = 0; i < features.length; i++) {
-    const feature = cardFeatures.querySelector(`.popup__feature--${features[i]}`);
+  if (features.length) {
+    const featuresFragment = document.createDocumentFragment();
 
-    feature.textContent = features[i];
-  }
+    cardFeatures.innerHTML = ``;
 
-  for (let i = 0; i < cardFeatures.children.length; i++) {
-    if (cardFeatures.children[i].textContent === ``) {
-      cardFeatures.children[i].classList.add(`hidden`);
+    for (let i = 0; i < features.length; i++) {
+      const feature = document.createElement(`li`);
+
+      feature.textContent = features[i];
+      feature.classList.add(`popup__feature`, `popup__feature--${features[i]}`);
+
+      featuresFragment.appendChild(feature);
     }
+
+    cardFeatures.appendChild(featuresFragment);
+  } else {
+    cardFeatures.classList.add(`hidden`);
   }
 }
 
