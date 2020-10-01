@@ -17,8 +17,6 @@ const offerPossiblePhotos = [
 const mapBlock = document.querySelector(`.map`);
 const offers = createOffers();
 
-console.log(offers[0]);
-
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
