@@ -84,7 +84,8 @@
     <!-- Форма объявления -->
     <section class="notice">
       <h2 class="notice__title">Ваше объявление</h2>
-      <form class="ad-form ad-form--disabled" method="post" enctype="multipart/form-data" autocomplete="off">
+      <form class="ad-form" method="post" enctype="multipart/form-data" autocomplete="off"
+            action="https://javascript.pages.academy/keksobooking">
         <fieldset class="ad-form-header">
           <legend class="ad-form-header__title">Ваша фотография (для карты)</legend>
           <div class="ad-form-header__upload">
@@ -135,10 +136,10 @@
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="room_number">Количество комнат</label>
           <select id="room_number" name="rooms">
-            <option value="1" selected>1 комната</option>
-            <option value="2">2 комнаты</option>
-            <option value="3">3 комнаты</option>
-            <option value="100">100 комнат</option>
+            <option value="1" data-valid="1" selected>1 комната</option>
+            <option value="2" data-valid="1, 2">2 комнаты</option>
+            <option value="3" data-valid="1, 2, 3">3 комнаты</option>
+            <option value="100" data-valid="0">100 комнат</option>
           </select>
         </fieldset>
         <fieldset class="ad-form__element">
