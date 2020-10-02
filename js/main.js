@@ -109,7 +109,7 @@ function createPin(offer, pinTemplate) {
   return pinElement;
 }
 
-/* function createCard(offer, cardTemplate) {
+function createCard(offer, cardTemplate) {
   const cardElement = cardTemplate.cloneNode(true);
   const cardTitle = cardElement.querySelector(`.popup__title`);
   const cardAddress = cardElement.querySelector(`.popup__text--address`);
@@ -136,15 +136,15 @@ function createPin(offer, pinTemplate) {
   addPhotos(photos, cardPhotos);
 
   return cardElement;
-}*/
+}
 
-/* function createPhoto(src, photoTemplate) {
+function createPhoto(src, photoTemplate) {
   const photoElement = photoTemplate.cloneNode(true);
 
   photoElement.src = src;
 
   return photoElement;
-}*/
+}
 
 function addPins() {
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
@@ -158,7 +158,7 @@ function addPins() {
   mapPinsBlock.appendChild(pinsFragment);
 }
 
-/* function addPhotos(photos, cardPhotos) {
+function addPhotos(photos, cardPhotos) {
   if (photos.length) {
     const photoTemplate = cardPhotos.querySelector(`.popup__photo`);
     const photosFragment = document.createDocumentFragment();
@@ -173,16 +173,16 @@ function addPins() {
   } else {
     cardPhotos.classList.add(`hidden`);
   }
-}*/
+}
 
-/* function addCard() {
+function addCard() {
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
   const filtersContainer = mapBlock.querySelector(`.map__filters-container`);
 
   mapBlock.insertBefore(createCard(offers[0], cardTemplate), filtersContainer);
-}*/
+}
 
-/* function makeFeatures(features, cardFeatures) {
+function makeFeatures(features, cardFeatures) {
   if (features.length) {
     const featuresFragment = document.createDocumentFragment();
 
@@ -217,7 +217,7 @@ function makeType(type, cardType) {
     case `bungalow`:
       cardType.textContent = `Бунгало`;
   }
-}*/
+}
 
 function toggleFormsDisable(isDisable) {
   toggleDisable(adFormFieldsets, isDisable);
@@ -291,6 +291,6 @@ capacitySelect.addEventListener(`change`, function () {
   validationCapacity();
 });
 
-addressInput.readOnly = true;
 toggleFormsDisable(true);
 fillAddress();
+addCard();
