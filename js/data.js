@@ -14,7 +14,7 @@
     `http://o0.github.io/assets/images/tokyo/hotel3.jpg`
   ];
   const mapBlock = document.querySelector(`.map`);
-  const offersArray = createOffers();
+  const offersData = createOffers();
 
   function createOffers() {
     const result = [];
@@ -56,6 +56,10 @@
   }
 
   window.data = {
-    offers: offersArray
+    offers: offersData,
+    locationY: {
+      min: LOCATION_Y_MIN,
+      max: LOCATION_Y_MAX
+    }
   };
 })();
