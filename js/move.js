@@ -8,6 +8,34 @@
   const locationYMin = window.data.locationY.min - mainPin.clientHeight;
   const locationYMax = window.data.locationY.max - mainPin.clientHeight;
 
+  function restrictMovement(newCoords, startCoords, axis, moveEvt) {
+    let min;
+    let max;
+    let evtCoords;
+
+    if (axis === `x`) {
+      min = locationXMin;
+      max = locationXMax;
+      evtCoords = moveEvt.clientX;
+    } else if (axis === `y`) {
+      min = locationYMin;
+      max = locationYMax;
+      evtCoords = moveEvt.clientY;
+    }
+
+    if (newCoords[axis] < max && newCoords[axis] > min) {
+      startCoords[axis] = evtCoords;
+    }
+
+    if (newCoords[axis] < min) {
+      newCoords[axis] = min;
+    }
+
+    if (newCoords[axis] > max) {
+      newCoords[axis] = max;
+    }
+  }
+
   mainPin.addEventListener(`mousedown`, function (evt) {
     evt.preventDefault();
 
@@ -28,27 +56,8 @@
         y: mainPin.offsetTop - shift.y
       };
 
-      startCoords.x = moveEvt.clientX;
-
-      if (newCoords.x < locationXMin) {
-        newCoords.x = locationXMin;
-      }
-
-      if (newCoords.x > locationXMax) {
-        newCoords.x = locationXMax;
-      }
-
-      if (newCoords.y < locationYMax && newCoords.y > locationYMin) {
-        startCoords.y = moveEvt.clientY;
-      }
-
-      if (newCoords.y < locationYMin) {
-        newCoords.y = locationYMin;
-      }
-
-      if (newCoords.y > locationYMax) {
-        newCoords.y = locationYMax;
-      }
+      restrictMovement(newCoords, startCoords, `x`, moveEvt);
+      restrictMovement(newCoords, startCoords, `y`, moveEvt);
 
       mainPin.style.top = newCoords.y + `px`;
       mainPin.style.left = newCoords.x + `px`;
@@ -61,11 +70,11 @@
 
       window.form.fillAddress();
 
-      mapBlock.removeEventListener(`mousemove`, onMouseMove);
+      document.removeEventListener(`mousemove`, onMouseMove);
       document.removeEventListener(`mouseup`, onMouseUp);
     }
 
-    mapBlock.addEventListener(`mousemove`, onMouseMove);
+    document.addEventListener(`mousemove`, onMouseMove);
     document.addEventListener(`mouseup`, onMouseUp);
   });
 })();

@@ -2,6 +2,7 @@
 
 (function () {
   const mapBlock = document.querySelector(`.map`);
+  const mapPinsBlock = mapBlock.querySelector(`.map__pins`);
   const mainPin = mapBlock.querySelector(`.map__pin--main`);
 
   function unblockDocument() {
@@ -24,6 +25,10 @@
       unblockDocument();
       window.form.fillAddress();
     }
+  });
+
+  mapPinsBlock.addEventListener(`click`, function (evt) {
+    window.card.show(evt);
   });
 
   window.form.toggleDisable(true);
