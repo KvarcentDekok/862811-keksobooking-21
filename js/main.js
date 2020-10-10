@@ -9,7 +9,19 @@
     if (mapBlock.classList.contains(`map--faded`)) {
       mapBlock.classList.remove(`map--faded`);
 
-      window.pin.addOnMap();
+      window.data.load(
+          function (response) {
+            window.main = {
+              offers: response
+            };
+
+            window.pin.addOnMap(response);
+          },
+          function (error) {
+            throw new Error(`Не удалось загрузить данные: ${error}`);
+          }
+      );
+
       window.form.toggleDisable(false);
     }
   }

@@ -131,7 +131,7 @@
 
     while (target !== mapPinsBlock) {
       if (target.matches(`.map__pin:not(.map__pin--main)`)) {
-        const offer = window.data.offers[target.dataset.offer];
+        const offer = window.main.offers[target.dataset.offer];
 
         if (cardPopup) {
           cardPopup.remove();

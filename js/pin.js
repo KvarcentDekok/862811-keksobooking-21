@@ -13,19 +13,19 @@
 
     pinElement.style.left = `${offer.location.x - PIN_WIDTH / 2}px`;
     pinElement.style.top = `${offer.location.y - PIN_HEIGHT}px`;
-    pinElement.dataset.offer = String(window.data.offers.indexOf(offer));
+    pinElement.dataset.offer = String(window.main.offers.indexOf(offer));
     pinAvatar.src = offer.author.avatar;
     pinAvatar.alt = offer.offer.title;
 
     return pinElement;
   }
 
-  function addPins() {
+  function addPins(offers) {
     const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
     const pinsFragment = document.createDocumentFragment();
 
-    for (let i = 0; i < window.data.offers.length; i++) {
-      pinsFragment.appendChild(createPin(window.data.offers[i], pinTemplate));
+    for (let i = 0; i < offers.length; i++) {
+      pinsFragment.appendChild(createPin(offers[i], pinTemplate));
     }
 
     mapPinsBlock.appendChild(pinsFragment);
