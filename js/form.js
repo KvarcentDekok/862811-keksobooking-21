@@ -2,10 +2,8 @@
 
 (function () {
   const mainBlock = document.querySelector(`main`);
-  const mapBlock = document.querySelector(`.map`);
+  const mapBlock = mainBlock.querySelector(`.map`);
   const mainPin = mapBlock.querySelector(`.map__pin--main`);
-  const mainPinLeft = mainPin.style.left;
-  const mainPinTop = mainPin.style.top;
   const adForm = document.querySelector(`.ad-form`);
   const adFormFieldsets = adForm.querySelectorAll(`fieldset`);
   const addressInput = adForm.querySelector(`#address`);
@@ -18,6 +16,8 @@
   const resetButton = adForm.querySelector(`.ad-form__reset`);
   const filtersForm = mapBlock.querySelector(`.map__filters`);
   const filters = filtersForm.querySelectorAll(`select, fieldset`);
+  const mainPinLeft = mainPin.style.left;
+  const mainPinTop = mainPin.style.top;
 
   function toggleFormsDisable(isDisable) {
     window.util.toggleDisable(adFormFieldsets, isDisable);
