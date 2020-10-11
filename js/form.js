@@ -1,8 +1,11 @@
 "use strict";
 
 (function () {
+  const mainBlock = document.querySelector(`main`);
   const mapBlock = document.querySelector(`.map`);
   const mainPin = mapBlock.querySelector(`.map__pin--main`);
+  const mainPinLeft = mainPin.style.left;
+  const mainPinTop = mainPin.style.top;
   const adForm = document.querySelector(`.ad-form`);
   const adFormFieldsets = adForm.querySelectorAll(`fieldset`);
   const addressInput = adForm.querySelector(`#address`);
@@ -12,7 +15,9 @@
   const typeSelect = adForm.querySelector(`#type`);
   const timeinSelect = adForm.querySelector(`#timein`);
   const timeoutSelect = adForm.querySelector(`#timeout`);
-  const filters = mapBlock.querySelectorAll(`select, fieldset`);
+  const resetButton = adForm.querySelector(`.ad-form__reset`);
+  const filtersForm = mapBlock.querySelector(`.map__filters`);
+  const filters = filtersForm.querySelectorAll(`select, fieldset`);
 
   function toggleFormsDisable(isDisable) {
     window.util.toggleDisable(adFormFieldsets, isDisable);
@@ -75,6 +80,84 @@
     }
   }
 
+  function submitForm(evt) {
+    evt.preventDefault();
+
+    window.data.save(
+        new FormData(adForm),
+        function () {
+          onSuccessSubmit();
+        },
+        function () {
+          onErrorSubmit();
+        });
+  }
+
+  function onSuccessSubmit() {
+    window.main.toggleBlocking(true);
+
+    showMessage(`success`);
+  }
+
+  function onErrorSubmit() {
+    showMessage(`error`);
+  }
+
+  function onClickCloseMessage(evt) {
+    closeMessage(evt);
+  }
+
+  function onEscCloseMessage(evt) {
+    if (evt.key === `Escape`) {
+      closeMessage(evt);
+    }
+  }
+
+  function showMessage(type) {
+    const messageTemplate = document.querySelector(`#${type}`).content.querySelector(`.${type}`);
+    const message = messageTemplate.cloneNode(true);
+
+    mainBlock.appendChild(message);
+    document.addEventListener(`click`, onClickCloseMessage);
+    document.addEventListener(`keydown`, onEscCloseMessage);
+  }
+
+  function closeMessage(evt) {
+    const message = document.querySelector(`.success, .error`);
+
+    evt.preventDefault();
+
+    message.remove();
+
+    document.removeEventListener(`click`, onClickCloseMessage);
+    document.removeEventListener(`keydown`, onEscCloseMessage)
+  }
+
+  function resetForm(evt) {
+    if (evt) {
+      evt.preventDefault();
+    }
+
+    adForm.reset();
+    filtersForm.reset();
+    window.pin.removeFromMap();
+    window.card.close();
+    validatePriceInput();
+
+    mainPin.style.left = mainPinLeft;
+    mainPin.style.top = mainPinTop;
+
+    window.form.fillAddress();
+  }
+
+  adForm.addEventListener(`submit`, function (evt) {
+    submitForm(evt);
+  });
+
+  resetButton.addEventListener(`click`, function (evt) {
+    window.main.toggleBlocking(true, evt);
+  });
+
   roomNumberSelect.addEventListener(`change`, function () {
     validateCapacity();
   });
@@ -102,6 +185,7 @@
   window.form = {
     toggleDisable: toggleFormsDisable,
     fillAddress: addressFill,
-    validatePrice: validatePriceInput
+    validatePrice: validatePriceInput,
+    reset: resetForm
   };
 })();

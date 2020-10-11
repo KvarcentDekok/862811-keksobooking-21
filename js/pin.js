@@ -31,7 +31,16 @@
     mapPinsBlock.appendChild(pinsFragment);
   }
 
+  function removePins() {
+    const pins = mapPinsBlock.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+
+    for (let i = 0; i < pins.length; i++) {
+      pins[i].remove();
+    }
+  }
+
   window.pin = {
-    addOnMap: addPins
+    addOnMap: addPins,
+    removeFromMap: removePins
   };
 })();

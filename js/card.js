@@ -9,15 +9,22 @@
   function onCardEscPress(evt) {
     if (evt.key === `Escape`) {
       evt.preventDefault();
-      cardPopup.remove();
-      document.removeEventListener(`keydown`, onCardEscPress);
+
+      closeCard();
     }
   }
 
   function onCardCloseClick(evt) {
     evt.preventDefault();
-    cardPopup.remove();
-    document.removeEventListener(`keydown`, onCardEscPress);
+
+    closeCard();
+  }
+
+  function closeCard() {
+    if (cardPopup) {
+      cardPopup.remove();
+      document.removeEventListener(`keydown`, onCardEscPress);
+    }
   }
 
   function createCard(offer, cardTemplate) {
@@ -147,6 +154,7 @@
   }
 
   window.card = {
-    show: showCard
+    show: showCard,
+    close: closeCard
   };
 })();
