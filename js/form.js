@@ -130,7 +130,7 @@
     message.remove();
 
     document.removeEventListener(`click`, onClickCloseMessage);
-    document.removeEventListener(`keydown`, onEscCloseMessage)
+    document.removeEventListener(`keydown`, onEscCloseMessage);
   }
 
   function resetForm(evt) {
