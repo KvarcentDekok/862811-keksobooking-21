@@ -94,7 +94,7 @@
   }
 
   function onSuccessSubmit() {
-    window.main.toggleBlocking(true);
+    window.main.blockState();
 
     showMessage(`success`);
   }
@@ -155,7 +155,7 @@
   });
 
   resetButton.addEventListener(`click`, function (evt) {
-    window.main.toggleBlocking(true, evt);
+    window.main.blockState(evt);
   });
 
   roomNumberSelect.addEventListener(`change`, function () {

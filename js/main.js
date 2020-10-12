@@ -5,7 +5,7 @@
   const mapPinsBlock = mapBlock.querySelector(`.map__pins`);
   const mainPin = mapBlock.querySelector(`.map__pin--main`);
 
-  function toggleBlockingDocument(isBlocking, evt) {
+  function unblockDocument() {
     if (mapBlock.classList.contains(`map--faded`)) {
       mapBlock.classList.remove(`map--faded`);
 
@@ -21,18 +21,20 @@
       );
 
       window.form.toggleDisable(false);
-    } else if (isBlocking) {
-      mapBlock.classList.add(`map--faded`);
-      window.form.toggleDisable(true);
-      window.form.reset(evt);
     }
+  }
+
+  function blockDocument(evt) {
+    mapBlock.classList.add(`map--faded`);
+    window.form.toggleDisable(true);
+    window.form.reset(evt);
   }
 
   mainPin.addEventListener(`mousedown`, function (evt) {
     if (evt.button === 0) {
       evt.preventDefault();
 
-      toggleBlockingDocument(false);
+      unblockDocument();
     }
   });
 
@@ -40,7 +42,7 @@
     if (evt.key === `Enter`) {
       evt.preventDefault();
 
-      toggleBlockingDocument(false);
+      unblockDocument();
       window.form.fillAddress();
     }
   });
@@ -49,8 +51,10 @@
     window.card.show(evt);
   });
 
-  window.main = {};
-  window.main.toggleBlocking = toggleBlockingDocument;
+  window.main = {
+    blockState: blockDocument,
+    unblockState: unblockDocument
+  };
 
   window.form.toggleDisable(true);
   window.form.fillAddress();
