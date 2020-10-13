@@ -2,7 +2,6 @@
 
 (function () {
   const mapBlock = document.querySelector(`.map`);
-  const mapPinsBlock = mapBlock.querySelector(`.map__pins`);
 
   let cardPopup;
 
