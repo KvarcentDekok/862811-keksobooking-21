@@ -2,7 +2,6 @@
 
 (function () {
   const mapBlock = document.querySelector(`.map`);
-  const mapPinsBlock = mapBlock.querySelector(`.map__pins`);
   const mainPin = mapBlock.querySelector(`.map__pin--main`);
 
   function unblockDocument() {
@@ -11,8 +10,6 @@
 
       window.data.load(
           function (response) {
-            window.main.offers = response;
-
             window.pin.addOnMap(response);
           },
           function (error) {
@@ -47,15 +44,11 @@
     }
   });
 
-  mapPinsBlock.addEventListener(`click`, function (evt) {
-    window.card.show(evt);
-  });
+  window.form.toggleDisable(true);
+  window.form.fillAddress();
 
   window.main = {
     blockState: blockDocument,
     unblockState: unblockDocument
   };
-
-  window.form.toggleDisable(true);
-  window.form.fillAddress();
 })();

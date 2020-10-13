@@ -131,26 +131,12 @@
     }
   }
 
-  function showCard(evt) {
-    evt.preventDefault();
-
-    let target = evt.target;
-
-    while (target !== mapPinsBlock) {
-      if (target.matches(`.map__pin:not(.map__pin--main)`)) {
-        const offer = window.main.offers[target.dataset.offer];
-
-        if (cardPopup) {
-          cardPopup.remove();
-        }
-
-        addCard(offer);
-
-        break;
-      }
-
-      target = target.parentNode;
+  function showCard(offer) {
+    if (cardPopup) {
+      cardPopup.remove();
     }
+
+    addCard(offer);
   }
 
   window.card = {
