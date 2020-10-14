@@ -4,6 +4,7 @@
   const LOCATION_Y_MIN = 130;
   const LOCATION_Y_MAX = 630;
   const LOAD_URL = `https://21.javascript.pages.academy/keksobooking/data`;
+  const SAVE_URL = `https://21.javascript.pages.academy/keksobooking`;
   const TIMEOUT_IN_MS = 10000;
 
   const StatusCode = {
@@ -46,7 +47,18 @@
     });
   }
 
+  function saveData(data, onLoad, onError) {
+    sendXhr({
+      onLoad,
+      onError,
+      method: `POST`,
+      URL: SAVE_URL,
+      data
+    });
+  }
+
   window.data = {
+    save: saveData,
     load: loadData,
     locationY: {
       min: LOCATION_Y_MIN,

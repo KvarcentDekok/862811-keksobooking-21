@@ -13,9 +13,12 @@
 
     pinElement.style.left = `${offer.location.x - PIN_WIDTH / 2}px`;
     pinElement.style.top = `${offer.location.y - PIN_HEIGHT}px`;
-    pinElement.dataset.offer = String(window.main.offers.indexOf(offer));
     pinAvatar.src = offer.author.avatar;
     pinAvatar.alt = offer.offer.title;
+
+    pinElement.addEventListener(`click`, function (evt) {
+      window.card.show(evt, offer);
+    });
 
     return pinElement;
   }
@@ -31,7 +34,16 @@
     mapPinsBlock.appendChild(pinsFragment);
   }
 
+  function removePins() {
+    const pins = mapPinsBlock.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+
+    for (let i = 0; i < pins.length; i++) {
+      pins[i].remove();
+    }
+  }
+
   window.pin = {
-    addOnMap: addPins
+    addOnMap: addPins,
+    removeFromMap: removePins
   };
 })();

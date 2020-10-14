@@ -2,22 +2,28 @@
 
 (function () {
   const mapBlock = document.querySelector(`.map`);
-  const mapPinsBlock = mapBlock.querySelector(`.map__pins`);
 
   let cardPopup;
 
   function onCardEscPress(evt) {
     if (evt.key === `Escape`) {
       evt.preventDefault();
-      cardPopup.remove();
-      document.removeEventListener(`keydown`, onCardEscPress);
+
+      closeCard();
     }
   }
 
   function onCardCloseClick(evt) {
     evt.preventDefault();
-    cardPopup.remove();
-    document.removeEventListener(`keydown`, onCardEscPress);
+
+    closeCard();
+  }
+
+  function closeCard() {
+    if (cardPopup) {
+      cardPopup.remove();
+      document.removeEventListener(`keydown`, onCardEscPress);
+    }
   }
 
   function createCard(offer, cardTemplate) {
@@ -124,29 +130,18 @@
     }
   }
 
-  function showCard(evt) {
+  function showCard(evt, offer) {
     evt.preventDefault();
 
-    let target = evt.target;
-
-    while (target !== mapPinsBlock) {
-      if (target.matches(`.map__pin:not(.map__pin--main)`)) {
-        const offer = window.main.offers[target.dataset.offer];
-
-        if (cardPopup) {
-          cardPopup.remove();
-        }
-
-        addCard(offer);
-
-        break;
-      }
-
-      target = target.parentNode;
+    if (cardPopup) {
+      cardPopup.remove();
     }
+
+    addCard(offer);
   }
 
   window.card = {
-    show: showCard
+    show: showCard,
+    close: closeCard
   };
 })();
