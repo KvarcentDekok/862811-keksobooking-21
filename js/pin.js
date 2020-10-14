@@ -7,12 +7,6 @@
   const mapBlock = document.querySelector(`.map`);
   const mapPinsBlock = mapBlock.querySelector(`.map__pins`);
 
-  function onPinClick(offer, evt) {
-    evt.preventDefault();
-
-    window.card.show(offer);
-  }
-
   function createPin(offer, pinTemplate) {
     const pinElement = pinTemplate.cloneNode(true);
     const pinAvatar = pinElement.querySelector(`img`);
@@ -22,7 +16,9 @@
     pinAvatar.src = offer.author.avatar;
     pinAvatar.alt = offer.offer.title;
 
-    pinElement.addEventListener(`click`, onPinClick.bind(undefined, offer));
+    pinElement.addEventListener(`click`, function (evt) {
+      window.card.show(evt, offer);
+    });
 
     return pinElement;
   }

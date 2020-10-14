@@ -130,7 +130,9 @@
     }
   }
 
-  function showCard(offer) {
+  function showCard(evt, offer) {
+    evt.preventDefault();
+
     if (cardPopup) {
       cardPopup.remove();
     }
