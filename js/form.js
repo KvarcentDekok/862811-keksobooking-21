@@ -19,15 +19,18 @@
   const mainPinLeft = mainPin.style.left;
   const mainPinTop = mainPin.style.top;
 
-  function toggleFormsDisable(isDisable) {
+  function toggleAdFormDisable(isDisable) {
     window.util.toggleDisable(adFormFieldsets, isDisable);
-    window.util.toggleDisable(filters, isDisable);
 
     if (isDisable) {
       adForm.classList.add(`ad-form--disabled`);
     } else {
       adForm.classList.remove(`ad-form--disabled`);
     }
+  }
+
+  function toggleFiltersDisable(isDisable) {
+    window.util.toggleDisable(filters, isDisable);
   }
 
   function addressFill() {
@@ -183,7 +186,10 @@
   });
 
   window.form = {
-    toggleDisable: toggleFormsDisable,
+    toggleDisable: {
+      adForm: toggleAdFormDisable,
+      filters: toggleFiltersDisable
+    },
     fillAddress: addressFill,
     validatePrice: validatePriceInput,
     reset: resetForm

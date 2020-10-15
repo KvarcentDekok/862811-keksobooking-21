@@ -23,11 +23,19 @@
     return pinElement;
   }
 
-  function addPins(offers) {
+  function addPins(offers, filters) {
     const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
     const pinsFragment = document.createDocumentFragment();
 
-    for (let i = 0; i < offers.length; i++) {
+    if (filters.type !== `any`) {
+      offers = offers.filter(function (value) {
+        return value.offer.type === filters.type;
+      });
+    }
+
+    const pinsCount = filters.pinsCount < offers.length ? filters.pinsCount : offers.length;
+
+    for (let i = 0; i < pinsCount; i++) {
       pinsFragment.appendChild(createPin(offers[i], pinTemplate));
     }
 
@@ -43,7 +51,7 @@
   }
 
   window.pin = {
-    addOnMap: addPins,
+    addOnMap: window.filter(addPins),
     removeFromMap: removePins
   };
 })();
