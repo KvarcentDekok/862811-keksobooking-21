@@ -4,7 +4,6 @@
   const PIN_WIDTH = 50;
   const PIN_HEIGHT = 70;
   const CLEAR_FILTER_VALUE = `any`;
-  const MAX_PINS_COUNT = 5;
 
   const mapBlock = document.querySelector(`.map`);
   const mapPinsBlock = mapBlock.querySelector(`.map__pins`);
@@ -54,7 +53,6 @@
 
   window.pin = {
     addOnMap: window.filter(addPins),
-    removeFromMap: removePins,
-    maxPinsCount: MAX_PINS_COUNT
+    removeFromMap: removePins
   };
 })();

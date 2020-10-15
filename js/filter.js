@@ -9,7 +9,7 @@
   function applyFilters(cb) {
     return function (offers) {
       const filters = {
-        pinsCount: window.pin.maxPinsCount,
+        pinsCount: window.util.MAX_PINS_COUNT,
         type: typeFilter.value
       };
 

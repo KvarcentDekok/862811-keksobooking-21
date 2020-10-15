@@ -1,6 +1,8 @@
 "use strict";
 
 (function () {
+  const COUNT_PINS_MAX = 5;
+
   function getRandomInteger(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -36,6 +38,7 @@
   }
 
   window.util = {
+    MAX_PINS_COUNT: COUNT_PINS_MAX,
     getRandomInt: getRandomInteger,
     getRandomElem: getRandomElement,
     getRandomArr: getRandomArray,
