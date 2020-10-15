@@ -11,19 +11,21 @@
       window.data.load(
           function (response) {
             window.pin.addOnMap(response);
+            window.form.toggleDisable.filters(false);
           },
           function (error) {
             throw new Error(`Не удалось загрузить данные: ${error}`);
           }
       );
 
-      window.form.toggleDisable(false);
+      window.form.toggleDisable.adForm(false);
     }
   }
 
   function blockDocument(evt) {
     mapBlock.classList.add(`map--faded`);
-    window.form.toggleDisable(true);
+    window.form.toggleDisable.adForm(true);
+    window.form.toggleDisable.filters(true);
     window.form.reset(evt);
   }
 
@@ -44,7 +46,8 @@
     }
   });
 
-  window.form.toggleDisable(true);
+  window.form.toggleDisable.adForm(true);
+  window.form.toggleDisable.filters(true);
   window.form.fillAddress();
 
   window.main = {
