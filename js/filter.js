@@ -32,7 +32,14 @@
       };
 
       offersData = offers;
-      cb(offers, filters);
+
+      offers = filterType(offers, filters);
+      offers = filterPrice(offers, filters);
+      offers = filterRooms(offers, filters);
+      offers = filterGuests(offers, filters);
+      offers = filterFeatures(offers, filters);
+
+      cb(offers, filters.pinsCount);
     };
   }
 
@@ -109,14 +116,5 @@
     window.pin.addOnMap(offersData);
   });
 
-  window.filter = {
-    apply: applyFilters,
-    getData: {
-      type: filterType,
-      price: filterPrice,
-      rooms: filterRooms,
-      guests: filterGuests,
-      features: filterFeatures
-    }
-  };
+  window.filter = applyFilters;
 })();

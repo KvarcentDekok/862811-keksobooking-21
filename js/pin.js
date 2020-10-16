@@ -23,17 +23,11 @@
     return pinElement;
   }
 
-  function addPins(offers, filters) {
+  function addPins(offers, pinsCount) {
     const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
     const pinsFragment = document.createDocumentFragment();
 
-    offers = window.filter.getData.type(offers, filters);
-    offers = window.filter.getData.price(offers, filters);
-    offers = window.filter.getData.rooms(offers, filters);
-    offers = window.filter.getData.guests(offers, filters);
-    offers = window.filter.getData.features(offers, filters);
-
-    const pinsCount = filters.pinsCount < offers.length ? filters.pinsCount : offers.length;
+    pinsCount = pinsCount < offers.length ? pinsCount : offers.length;
 
     for (let i = 0; i < pinsCount; i++) {
       pinsFragment.appendChild(createPin(offers[i], pinTemplate));
@@ -51,7 +45,7 @@
   }
 
   window.pin = {
-    addOnMap: window.debounce(window.filter.apply(addPins)),
+    addOnMap: window.debounce(window.filter(addPins)),
     removeFromMap: removePins
   };
 })();
