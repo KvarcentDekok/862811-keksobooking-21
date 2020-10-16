@@ -3,7 +3,6 @@
 (function () {
   const PIN_WIDTH = 50;
   const PIN_HEIGHT = 70;
-  const CLEAR_FILTER_VALUE = `any`;
 
   const mapBlock = document.querySelector(`.map`);
   const mapPinsBlock = mapBlock.querySelector(`.map__pins`);
@@ -28,11 +27,11 @@
     const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
     const pinsFragment = document.createDocumentFragment();
 
-    if (filters.type !== CLEAR_FILTER_VALUE) {
-      offers = offers.filter(function (value) {
-        return value.offer.type === filters.type;
-      });
-    }
+    offers = window.filter.getData.type(offers, filters);
+    offers = window.filter.getData.price(offers, filters);
+    offers = window.filter.getData.rooms(offers, filters);
+    offers = window.filter.getData.guests(offers, filters);
+    offers = window.filter.getData.features(offers, filters);
 
     const pinsCount = filters.pinsCount < offers.length ? filters.pinsCount : offers.length;
 
@@ -52,7 +51,7 @@
   }
 
   window.pin = {
-    addOnMap: window.filter(addPins),
+    addOnMap: window.debounce(window.filter.apply(addPins)),
     removeFromMap: removePins
   };
 })();
