@@ -2,6 +2,7 @@
 
 (function () {
   const COUNT_PINS_MAX = 5;
+  const VALUE_CLEAR_FILTER = `any`;
 
   function getRandomInteger(min, max) {
     min = Math.ceil(min);
@@ -39,6 +40,7 @@
 
   window.util = {
     MAX_PINS_COUNT: COUNT_PINS_MAX,
+    CLEAR_FILTER_VALUE: VALUE_CLEAR_FILTER,
     getRandomInt: getRandomInteger,
     getRandomElem: getRandomElement,
     getRandomArr: getRandomArray,
