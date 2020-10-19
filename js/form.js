@@ -1,197 +1,195 @@
 "use strict";
 
-(function () {
-  const mainBlock = document.querySelector(`main`);
-  const mapBlock = mainBlock.querySelector(`.map`);
-  const mainPin = mapBlock.querySelector(`.map__pin--main`);
-  const adForm = document.querySelector(`.ad-form`);
-  const adFormFieldsets = adForm.querySelectorAll(`fieldset`);
-  const addressInput = adForm.querySelector(`#address`);
-  const priceInput = adForm.querySelector(`#price`);
-  const roomNumberSelect = adForm.querySelector(`#room_number`);
-  const capacitySelect = adForm.querySelector(`#capacity`);
-  const typeSelect = adForm.querySelector(`#type`);
-  const timeinSelect = adForm.querySelector(`#timein`);
-  const timeoutSelect = adForm.querySelector(`#timeout`);
-  const resetButton = adForm.querySelector(`.ad-form__reset`);
-  const filtersForm = mapBlock.querySelector(`.map__filters`);
-  const filters = filtersForm.querySelectorAll(`select, fieldset`);
-  const mainPinLeft = mainPin.style.left;
-  const mainPinTop = mainPin.style.top;
+const mainBlock = document.querySelector(`main`);
+const mapBlock = mainBlock.querySelector(`.map`);
+const mainPin = mapBlock.querySelector(`.map__pin--main`);
+const adForm = document.querySelector(`.ad-form`);
+const adFormFieldsets = adForm.querySelectorAll(`fieldset`);
+const addressInput = adForm.querySelector(`#address`);
+const priceInput = adForm.querySelector(`#price`);
+const roomNumberSelect = adForm.querySelector(`#room_number`);
+const capacitySelect = adForm.querySelector(`#capacity`);
+const typeSelect = adForm.querySelector(`#type`);
+const timeinSelect = adForm.querySelector(`#timein`);
+const timeoutSelect = adForm.querySelector(`#timeout`);
+const resetButton = adForm.querySelector(`.ad-form__reset`);
+const filtersForm = mapBlock.querySelector(`.map__filters`);
+const filters = filtersForm.querySelectorAll(`select, fieldset`);
+const mainPinLeft = mainPin.style.left;
+const mainPinTop = mainPin.style.top;
 
-  function toggleAdFormDisable(isDisable) {
-    window.util.toggleDisable(adFormFieldsets, isDisable);
+function toggleAdFormDisable(isDisable) {
+  window.util.toggleDisable(adFormFieldsets, isDisable);
 
-    if (isDisable) {
-      adForm.classList.add(`ad-form--disabled`);
-    } else {
-      adForm.classList.remove(`ad-form--disabled`);
-    }
+  if (isDisable) {
+    adForm.classList.add(`ad-form--disabled`);
+  } else {
+    adForm.classList.remove(`ad-form--disabled`);
+  }
+}
+
+function toggleFiltersDisable(isDisable) {
+  window.util.toggleDisable(filters, isDisable);
+}
+
+function addressFill() {
+  const offsetX = mainPin.clientWidth / 2;
+
+  let offsetY = mainPin.clientHeight;
+
+  if (mapBlock.classList.contains(`map--faded`)) {
+    offsetY = offsetY / 2;
   }
 
-  function toggleFiltersDisable(isDisable) {
-    window.util.toggleDisable(filters, isDisable);
+  let pinX = Math.round(parseInt(mainPin.style.left, 10) + offsetX);
+  let pinY = Math.round(parseInt(mainPin.style.top, 10) + offsetY);
+
+  addressInput.value = `${pinX}, ${pinY}`;
+}
+
+function validateCapacity() {
+  const selectedOption = roomNumberSelect.options[roomNumberSelect.selectedIndex];
+  const validCapacityNumbers = selectedOption.dataset.valid.split(`, `);
+
+  capacitySelect.setCustomValidity(``);
+
+  if (!(validCapacityNumbers.indexOf(capacitySelect.value) + 1)) {
+    const errorText = `Недопустимое значение при выбранном количестве комнат: ${roomNumberSelect.value}`;
+
+    capacitySelect.setCustomValidity(errorText);
   }
 
-  function addressFill() {
-    const offsetX = mainPin.clientWidth / 2;
+  capacitySelect.reportValidity();
+}
 
-    let offsetY = mainPin.clientHeight;
+function validatePriceInput() {
+  const selectedOption = typeSelect.options[typeSelect.selectedIndex];
+  const validMinPrice = selectedOption.dataset.valid;
 
-    if (mapBlock.classList.contains(`map--faded`)) {
-      offsetY = offsetY / 2;
-    }
+  priceInput.min = validMinPrice;
+  priceInput.placeholder = validMinPrice;
 
-    let pinX = Math.round(parseInt(mainPin.style.left, 10) + offsetX);
-    let pinY = Math.round(parseInt(mainPin.style.top, 10) + offsetY);
-
-    addressInput.value = `${pinX}, ${pinY}`;
+  if (!priceInput.validity.valid && !priceInput.validity.valueMissing) {
+    priceInput.reportValidity();
   }
+}
 
-  function validateCapacity() {
-    const selectedOption = roomNumberSelect.options[roomNumberSelect.selectedIndex];
-    const validCapacityNumbers = selectedOption.dataset.valid.split(`, `);
-
-    capacitySelect.setCustomValidity(``);
-
-    if (!(validCapacityNumbers.indexOf(capacitySelect.value) + 1)) {
-      const errorText = `Недопустимое значение при выбранном количестве комнат: ${roomNumberSelect.value}`;
-
-      capacitySelect.setCustomValidity(errorText);
-    }
-
-    capacitySelect.reportValidity();
+function bindTimes(evt) {
+  if (evt.target === timeinSelect) {
+    timeoutSelect.value = timeinSelect.value;
+  } else if (evt.target === timeoutSelect) {
+    timeinSelect.value = timeoutSelect.value;
   }
+}
 
-  function validatePriceInput() {
-    const selectedOption = typeSelect.options[typeSelect.selectedIndex];
-    const validMinPrice = selectedOption.dataset.valid;
+function submitForm(evt) {
+  evt.preventDefault();
 
-    priceInput.min = validMinPrice;
-    priceInput.placeholder = validMinPrice;
+  window.data.save(
+      new FormData(adForm),
+      function () {
+        onSuccessSubmit();
+      },
+      function () {
+        onErrorSubmit();
+      });
+}
 
-    if (!priceInput.validity.valid && !priceInput.validity.valueMissing) {
-      priceInput.reportValidity();
-    }
-  }
+function onSuccessSubmit() {
+  window.main.blockState();
 
-  function bindTimes(evt) {
-    if (evt.target === timeinSelect) {
-      timeoutSelect.value = timeinSelect.value;
-    } else if (evt.target === timeoutSelect) {
-      timeinSelect.value = timeoutSelect.value;
-    }
-  }
+  showMessage(`success`);
+}
 
-  function submitForm(evt) {
-    evt.preventDefault();
+function onErrorSubmit() {
+  showMessage(`error`);
+}
 
-    window.data.save(
-        new FormData(adForm),
-        function () {
-          onSuccessSubmit();
-        },
-        function () {
-          onErrorSubmit();
-        });
-  }
+function onClickCloseMessage(evt) {
+  closeMessage(evt);
+}
 
-  function onSuccessSubmit() {
-    window.main.blockState();
-
-    showMessage(`success`);
-  }
-
-  function onErrorSubmit() {
-    showMessage(`error`);
-  }
-
-  function onClickCloseMessage(evt) {
+function onEscCloseMessage(evt) {
+  if (evt.key === `Escape`) {
     closeMessage(evt);
   }
+}
 
-  function onEscCloseMessage(evt) {
-    if (evt.key === `Escape`) {
-      closeMessage(evt);
-    }
-  }
+function showMessage(type) {
+  const messageTemplate = document.querySelector(`#${type}`).content.querySelector(`.${type}`);
+  const message = messageTemplate.cloneNode(true);
 
-  function showMessage(type) {
-    const messageTemplate = document.querySelector(`#${type}`).content.querySelector(`.${type}`);
-    const message = messageTemplate.cloneNode(true);
+  mainBlock.appendChild(message);
+  document.addEventListener(`click`, onClickCloseMessage);
+  document.addEventListener(`keydown`, onEscCloseMessage);
+}
 
-    mainBlock.appendChild(message);
-    document.addEventListener(`click`, onClickCloseMessage);
-    document.addEventListener(`keydown`, onEscCloseMessage);
-  }
+function closeMessage(evt) {
+  const message = document.querySelector(`.success, .error`);
 
-  function closeMessage(evt) {
-    const message = document.querySelector(`.success, .error`);
+  evt.preventDefault();
 
+  message.remove();
+
+  document.removeEventListener(`click`, onClickCloseMessage);
+  document.removeEventListener(`keydown`, onEscCloseMessage);
+}
+
+function resetForm(evt) {
+  if (evt) {
     evt.preventDefault();
-
-    message.remove();
-
-    document.removeEventListener(`click`, onClickCloseMessage);
-    document.removeEventListener(`keydown`, onEscCloseMessage);
   }
 
-  function resetForm(evt) {
-    if (evt) {
-      evt.preventDefault();
-    }
+  adForm.reset();
+  filtersForm.reset();
+  window.pin.removeFromMap();
+  window.card.close();
+  validatePriceInput();
 
-    adForm.reset();
-    filtersForm.reset();
-    window.pin.removeFromMap();
-    window.card.close();
-    validatePriceInput();
+  mainPin.style.left = mainPinLeft;
+  mainPin.style.top = mainPinTop;
 
-    mainPin.style.left = mainPinLeft;
-    mainPin.style.top = mainPinTop;
+  window.form.fillAddress();
+}
 
-    window.form.fillAddress();
-  }
+adForm.addEventListener(`submit`, function (evt) {
+  submitForm(evt);
+});
 
-  adForm.addEventListener(`submit`, function (evt) {
-    submitForm(evt);
-  });
+resetButton.addEventListener(`click`, function (evt) {
+  window.main.blockState(evt);
+});
 
-  resetButton.addEventListener(`click`, function (evt) {
-    window.main.blockState(evt);
-  });
+roomNumberSelect.addEventListener(`change`, function () {
+  validateCapacity();
+});
 
-  roomNumberSelect.addEventListener(`change`, function () {
-    validateCapacity();
-  });
+capacitySelect.addEventListener(`change`, function () {
+  validateCapacity();
+});
 
-  capacitySelect.addEventListener(`change`, function () {
-    validateCapacity();
-  });
+typeSelect.addEventListener(`change`, function () {
+  validatePriceInput();
+});
 
-  typeSelect.addEventListener(`change`, function () {
-    validatePriceInput();
-  });
+priceInput.addEventListener(`input`, function () {
+  validatePriceInput();
+});
 
-  priceInput.addEventListener(`input`, function () {
-    validatePriceInput();
-  });
+timeinSelect.addEventListener(`change`, function (evt) {
+  bindTimes(evt);
+});
 
-  timeinSelect.addEventListener(`change`, function (evt) {
-    bindTimes(evt);
-  });
+timeoutSelect.addEventListener(`change`, function (evt) {
+  bindTimes(evt);
+});
 
-  timeoutSelect.addEventListener(`change`, function (evt) {
-    bindTimes(evt);
-  });
-
-  window.form = {
-    toggleDisable: {
-      adForm: toggleAdFormDisable,
-      filters: toggleFiltersDisable
-    },
-    fillAddress: addressFill,
-    validatePrice: validatePriceInput,
-    reset: resetForm
-  };
-})();
+window.form = {
+  toggleDisable: {
+    adForm: toggleAdFormDisable,
+    filters: toggleFiltersDisable
+  },
+  fillAddress: addressFill,
+  validatePrice: validatePriceInput,
+  reset: resetForm
+};
