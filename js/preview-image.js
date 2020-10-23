@@ -1,10 +1,11 @@
 "use strict";
 
-const FILE_TYPES = [`image/gif`, `image/jpg`, `image/jpeg`, `image/png`];
+const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
 const UPLOAD_PHOTO_ALT = `Загруженное фото`;
+const imgTemplate = document.querySelector(`.ad-form-header__preview img`);
 
 function onReaderLoad(previewBlock, reader) {
-  const preview = document.createElement(`img`);
+  const preview = imgTemplate.cloneNode();
   const fragment = document.createDocumentFragment();
 
   preview.alt = UPLOAD_PHOTO_ALT;
@@ -16,16 +17,15 @@ function onReaderLoad(previewBlock, reader) {
 }
 
 function changeImage(fileChooser, previewBlock) {
-  const acceptTypes = fileChooser.accept ? fileChooser.accept.split(`, `) : FILE_TYPES;
   const file = fileChooser.files[0];
 
   previewBlock.innerHTML = ``;
 
   if (file) {
-    const fileType = file.type;
+    const fileType = file.type.toLowerCase();
 
-    const matches = acceptTypes.some(function (type) {
-      return fileType === type;
+    const matches = FILE_TYPES.some(function (it) {
+      return fileType.endsWith(it);
     });
 
     if (matches) {
