@@ -6,6 +6,7 @@ module.exports = {
     "./js/debounce.js",
     "./js/filter.js",
     "./js/data.js",
+    "./js/preview-image.js",
     "./js/form.js",
     "./js/pin.js",
     "./js/card.js",
