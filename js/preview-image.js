@@ -5,11 +5,14 @@ const UPLOAD_PHOTO_ALT = `Загруженное фото`;
 
 function onReaderLoad(previewBlock, reader) {
   const preview = document.createElement(`img`);
+  const fragment = document.createDocumentFragment();
 
   preview.alt = UPLOAD_PHOTO_ALT;
   preview.src = reader.result;
 
-  previewBlock.appendChild(preview);
+  fragment.appendChild(preview);
+
+  previewBlock.appendChild(fragment);
 }
 
 function changeImage(fileChooser, previewBlock) {
