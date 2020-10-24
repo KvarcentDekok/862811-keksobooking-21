@@ -1244,6 +1244,24 @@ fieldset {
   opacity: 0.6;
 }
 
+/**
+ * Сообщение об ошибке загрузки данных
+ */
+
+.map-error {
+  margin: 0;
+  padding: 3px;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  font-size: 12px;
+  color: red;
+
+  background-color: lightgray;
+}
+
 .visually-hidden {
   position: absolute;
 

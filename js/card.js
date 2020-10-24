@@ -1,5 +1,7 @@
 "use strict";
 
+const HIDDEN_CLASS = `hidden`;
+
 const mapBlock = document.querySelector(`.map`);
 
 let cardPopup;
@@ -22,6 +24,7 @@ function closeCard() {
   if (cardPopup) {
     cardPopup.remove();
     document.removeEventListener(`keydown`, onCardEscPress);
+    window.pin.makeInactive();
   }
 }
 
@@ -40,17 +43,85 @@ function createCard(offer, cardTemplate) {
   const cardClose = cardElement.querySelector(`.popup__close`);
   const {title, address, price, type, rooms, guests, checkin, checkout, features, description, photos} = offer.offer;
 
-  cardTitle.textContent = title;
-  cardAddress.textContent = address;
-  cardPrice.textContent = `${price}₽/ночь`;
-  cardCapacity.textContent = `${rooms} комнаты для ${guests} гостей`;
-  cardTime.textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
-  cardDescription.textContent = description;
-  cardAvatar.src = offer.author.avatar;
+  makeField({
+    field: cardTitle,
+    data: [title],
+    cb() {
+      cardTitle.textContent = title;
+    }
+  });
 
-  makeType(type, cardType);
-  makeFeatures(features, cardFeatures);
-  addPhotos(photos, cardPhotos);
+  makeField({
+    field: cardAddress,
+    data: [address],
+    cb() {
+      cardAddress.textContent = address;
+    }
+  });
+
+  makeField({
+    field: cardPrice,
+    data: [price],
+    cb() {
+      cardPrice.textContent = `${price}₽/ночь`;
+    }
+  });
+
+  makeField({
+    field: cardCapacity,
+    data: [rooms, guests],
+    cb() {
+      cardCapacity.textContent = `${rooms} комнаты для ${guests} гостей`;
+    }
+  });
+
+  makeField({
+    field: cardTime,
+    data: [checkin, checkout],
+    cb() {
+      cardTime.textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
+    }
+  });
+
+  makeField({
+    field: cardDescription,
+    data: [description],
+    cb() {
+      cardDescription.textContent = description;
+    }
+  });
+
+  makeField({
+    field: cardAvatar,
+    data: [offer.author.avatar],
+    cb() {
+      cardAvatar.src = offer.author.avatar;
+    }
+  });
+
+  makeField({
+    field: cardType,
+    data: [type],
+    cb() {
+      makeType(type, cardType);
+    }
+  });
+
+  makeField({
+    field: cardFeatures,
+    data: [features.length],
+    cb() {
+      makeFeatures(features, cardFeatures);
+    }
+  });
+
+  makeField({
+    field: cardPhotos,
+    data: [photos.length],
+    cb() {
+      addPhotos(photos, cardPhotos);
+    }
+  });
 
   cardPopup = cardElement;
 
@@ -69,20 +140,16 @@ function createPhoto(src, photoTemplate) {
 }
 
 function addPhotos(photos, cardPhotos) {
-  if (photos.length) {
-    const photoTemplate = cardPhotos.querySelector(`.popup__photo`);
-    const photosFragment = document.createDocumentFragment();
+  const photoTemplate = cardPhotos.querySelector(`.popup__photo`);
+  const photosFragment = document.createDocumentFragment();
 
-    photoTemplate.remove();
+  photoTemplate.remove();
 
-    for (let i = 0; i < photos.length; i++) {
-      photosFragment.appendChild(createPhoto(photos[i], photoTemplate));
-    }
-
-    cardPhotos.appendChild(photosFragment);
-  } else {
-    cardPhotos.classList.add(`hidden`);
+  for (let i = 0; i < photos.length; i++) {
+    photosFragment.appendChild(createPhoto(photos[i], photoTemplate));
   }
+
+  cardPhotos.appendChild(photosFragment);
 }
 
 function addCard(offer) {
@@ -92,25 +159,33 @@ function addCard(offer) {
   mapBlock.insertBefore(createCard(offer, cardTemplate), filtersContainer);
 }
 
-function makeFeatures(features, cardFeatures) {
-  if (features.length) {
-    const featuresFragment = document.createDocumentFragment();
+function makeField(options) {
+  const isData = options.data.every(function (value) {
+    return value;
+  });
 
-    cardFeatures.innerHTML = ``;
-
-    for (let i = 0; i < features.length; i++) {
-      const feature = document.createElement(`li`);
-
-      feature.textContent = features[i];
-      feature.classList.add(`popup__feature`, `popup__feature--${features[i]}`);
-
-      featuresFragment.appendChild(feature);
-    }
-
-    cardFeatures.appendChild(featuresFragment);
+  if (isData) {
+    options.cb();
   } else {
-    cardFeatures.classList.add(`hidden`);
+    options.field.classList.add(HIDDEN_CLASS);
   }
+}
+
+function makeFeatures(features, cardFeatures) {
+  const featuresFragment = document.createDocumentFragment();
+
+  cardFeatures.innerHTML = ``;
+
+  for (let i = 0; i < features.length; i++) {
+    const feature = document.createElement(`li`);
+
+    feature.textContent = features[i];
+    feature.classList.add(`popup__feature`, `popup__feature--${features[i]}`);
+
+    featuresFragment.appendChild(feature);
+  }
+
+  cardFeatures.appendChild(featuresFragment);
 }
 
 function makeType(type, cardType) {

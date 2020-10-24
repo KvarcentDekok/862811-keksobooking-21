@@ -2,6 +2,7 @@
 
 const mapBlock = document.querySelector(`.map`);
 const mainPin = mapBlock.querySelector(`.map__pin--main`);
+const mapErrorTemplate = document.querySelector(`#map-error`).content.querySelector(`.map-error`);
 
 function unblockDocument() {
   if (mapBlock.classList.contains(`map--faded`)) {
@@ -9,11 +10,21 @@ function unblockDocument() {
 
     window.data.load(
         function (response) {
+          const mapErrorMessage = mapBlock.querySelector(`.map-error`);
+
+          if (mapErrorMessage) {
+            mapErrorMessage.remove();
+          }
+
           window.pin.addOnMap(response);
           window.form.toggleDisable.filters(false);
         },
-        function (error) {
-          throw new Error(`Не удалось загрузить данные: ${error}`);
+        function () {
+          const mapErrorMessage = mapErrorTemplate.cloneNode(true);
+          const fragment = document.createDocumentFragment();
+
+          fragment.appendChild(mapErrorMessage);
+          mapBlock.appendChild(fragment);
         }
     );
 

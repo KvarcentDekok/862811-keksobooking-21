@@ -2,9 +2,24 @@
 
 const PIN_WIDTH = 50;
 const PIN_HEIGHT = 70;
+const ACTIVE_PIN_CLASS = `map__pin--active`;
 
 const mapBlock = document.querySelector(`.map`);
 const mapPinsBlock = mapBlock.querySelector(`.map__pins`);
+
+function makePinActive(pin) {
+  makePinInactive();
+
+  pin.classList.add(ACTIVE_PIN_CLASS);
+}
+
+function makePinInactive() {
+  const currentActivePin = mapPinsBlock.querySelector(`.${ACTIVE_PIN_CLASS}`);
+
+  if (currentActivePin) {
+    currentActivePin.classList.remove(ACTIVE_PIN_CLASS);
+  }
+}
 
 function createPin(offer, pinTemplate) {
   const pinElement = pinTemplate.cloneNode(true);
@@ -16,6 +31,7 @@ function createPin(offer, pinTemplate) {
   pinAvatar.alt = offer.offer.title;
 
   pinElement.addEventListener(`click`, function (evt) {
+    makePinActive(pinElement);
     window.card.show(evt, offer);
   });
 
@@ -25,6 +41,10 @@ function createPin(offer, pinTemplate) {
 function addPins(offers, pinsCount) {
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
   const pinsFragment = document.createDocumentFragment();
+
+  offers = offers.filter(function (offer) {
+    return offer.offer;
+  });
 
   pinsCount = pinsCount < offers.length ? pinsCount : offers.length;
 
@@ -45,5 +65,6 @@ function removePins() {
 
 window.pin = {
   addOnMap: window.debounce(window.filter(addPins)),
-  removeFromMap: removePins
+  removeFromMap: removePins,
+  makeInactive: makePinInactive
 };

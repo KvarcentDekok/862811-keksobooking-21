@@ -7,6 +7,38 @@ const locationXMax = mapBlock.clientWidth - (mainPin.clientWidth / 2);
 const locationYMin = window.data.locationY.min - mainPin.clientHeight;
 const locationYMax = window.data.locationY.max - mainPin.clientHeight;
 
+let onMouseMove;
+
+function movePin(startCoords, evt) {
+  evt.preventDefault();
+
+  const shift = {
+    x: startCoords.x - evt.clientX,
+    y: startCoords.y - evt.clientY
+  };
+  const newCoords = {
+    x: mainPin.offsetLeft - shift.x,
+    y: mainPin.offsetTop - shift.y
+  };
+
+  restrictMovement(newCoords, startCoords, `x`, evt);
+  restrictMovement(newCoords, startCoords, `y`, evt);
+
+  mainPin.style.top = newCoords.y + `px`;
+  mainPin.style.left = newCoords.x + `px`;
+
+  window.form.fillAddress();
+}
+
+function onMouseUp(evt) {
+  evt.preventDefault();
+
+  window.form.fillAddress();
+
+  document.removeEventListener(`mousemove`, onMouseMove);
+  document.removeEventListener(`mouseup`, onMouseUp);
+}
+
 function restrictMovement(newCoords, startCoords, axis, moveEvt) {
   let min;
   let max;
@@ -35,44 +67,23 @@ function restrictMovement(newCoords, startCoords, axis, moveEvt) {
   }
 }
 
+function initMovePin(evt) {
+  if (evt.button === 0) {
+    let startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    evt.preventDefault();
+
+    onMouseMove = movePin.bind(undefined, startCoords);
+
+    document.addEventListener(`mousemove`, onMouseMove);
+
+    document.addEventListener(`mouseup`, onMouseUp);
+  }
+}
+
 mainPin.addEventListener(`mousedown`, function (evt) {
-  evt.preventDefault();
-
-  let startCoords = {
-    x: evt.clientX,
-    y: evt.clientY
-  };
-
-  function onMouseMove(moveEvt) {
-    moveEvt.preventDefault();
-
-    const shift = {
-      x: startCoords.x - moveEvt.clientX,
-      y: startCoords.y - moveEvt.clientY
-    };
-    const newCoords = {
-      x: mainPin.offsetLeft - shift.x,
-      y: mainPin.offsetTop - shift.y
-    };
-
-    restrictMovement(newCoords, startCoords, `x`, moveEvt);
-    restrictMovement(newCoords, startCoords, `y`, moveEvt);
-
-    mainPin.style.top = newCoords.y + `px`;
-    mainPin.style.left = newCoords.x + `px`;
-
-    window.form.fillAddress();
-  }
-
-  function onMouseUp(upEvt) {
-    upEvt.preventDefault();
-
-    window.form.fillAddress();
-
-    document.removeEventListener(`mousemove`, onMouseMove);
-    document.removeEventListener(`mouseup`, onMouseUp);
-  }
-
-  document.addEventListener(`mousemove`, onMouseMove);
-  document.addEventListener(`mouseup`, onMouseUp);
+  initMovePin(evt);
 });
