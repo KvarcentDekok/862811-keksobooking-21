@@ -12,6 +12,10 @@ const capacitySelect = adForm.querySelector(`#capacity`);
 const typeSelect = adForm.querySelector(`#type`);
 const timeinSelect = adForm.querySelector(`#timein`);
 const timeoutSelect = adForm.querySelector(`#timeout`);
+const avatarInput = adForm.querySelector(`#avatar`);
+const avatarPreviewBlock = adForm.querySelector(`.ad-form-header__preview`);
+const houseImageInput = adForm.querySelector(`#images`);
+const houseImagePreviewBlock = adForm.querySelector(`.ad-form__photo`);
 const resetButton = adForm.querySelector(`.ad-form__reset`);
 const filtersForm = mapBlock.querySelector(`.map__filters`);
 const filters = filtersForm.querySelectorAll(`select, fieldset`);
@@ -149,6 +153,9 @@ function resetForm(evt) {
   mainPin.style.left = mainPinLeft;
   mainPin.style.top = mainPinTop;
 
+  avatarPreviewBlock.innerHTML = ``;
+  houseImagePreviewBlock.innerHTML = ``;
+
   window.form.fillAddress();
 }
 
@@ -182,6 +189,14 @@ timeinSelect.addEventListener(`change`, function (evt) {
 
 timeoutSelect.addEventListener(`change`, function (evt) {
   bindTimes(evt);
+});
+
+avatarInput.addEventListener(`change`, function () {
+  window.previewImage(avatarInput, avatarPreviewBlock);
+});
+
+houseImageInput.addEventListener(`change`, function () {
+  window.previewImage(houseImageInput, houseImagePreviewBlock);
 });
 
 window.form = {
