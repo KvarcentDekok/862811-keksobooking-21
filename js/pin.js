@@ -30,7 +30,7 @@ function createPin(offer, pinTemplate) {
   pinAvatar.src = offer.author.avatar;
   pinAvatar.alt = offer.offer.title;
 
-  pinElement.addEventListener(`click`, function (evt) {
+  pinElement.addEventListener(`click`, (evt) => {
     makePinActive(pinElement);
     window.card.show(evt, offer);
   });
@@ -42,7 +42,7 @@ function addPins(offers, pinsCount) {
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
   const pinsFragment = document.createDocumentFragment();
 
-  offers = offers.filter(function (offer) {
+  offers = offers.filter((offer) => {
     return offer.offer;
   });
 

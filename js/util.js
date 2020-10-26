@@ -3,6 +3,11 @@
 const COUNT_PINS_MAX = 5;
 const VALUE_CLEAR_FILTER = `any`;
 
+const HTMLClassDisabled = {
+  AD_FORM: `ad-form--disabled`,
+  MAP: `map--faded`
+};
+
 function getRandomInteger(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -40,6 +45,7 @@ function toggleDisableState(elements, isDisable) {
 window.util = {
   MAX_PINS_COUNT: COUNT_PINS_MAX,
   CLEAR_FILTER_VALUE: VALUE_CLEAR_FILTER,
+  ClassDisabled: HTMLClassDisabled,
   getRandomInt: getRandomInteger,
   getRandomElem: getRandomElement,
   getRandomArr: getRandomArray,

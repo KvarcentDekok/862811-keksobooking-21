@@ -84,6 +84,6 @@ function initMovePin(evt) {
   }
 }
 
-mainPin.addEventListener(`mousedown`, function (evt) {
+mainPin.addEventListener(`mousedown`, (evt) => {
   initMovePin(evt);
 });

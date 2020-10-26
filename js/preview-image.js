@@ -24,14 +24,14 @@ function changeImage(fileChooser, previewBlock) {
   if (file) {
     const fileType = file.type.toLowerCase();
 
-    const matches = FILE_TYPES.some(function (it) {
+    const matches = FILE_TYPES.some((it) => {
       return fileType.endsWith(it);
     });
 
     if (matches) {
       const reader = new FileReader();
 
-      reader.addEventListener(`load`, function () {
+      reader.addEventListener(`load`, () => {
         onReaderLoad(previewBlock, reader);
       });
 

@@ -1,5 +1,10 @@
 "use strict";
 
+const MessageType = {
+  SUCCESS: `success`,
+  ERROR: `error`
+};
+
 const mainBlock = document.querySelector(`main`);
 const mapBlock = mainBlock.querySelector(`.map`);
 const mainPin = mapBlock.querySelector(`.map__pin--main`);
@@ -26,9 +31,9 @@ function toggleAdFormDisable(isDisable) {
   window.util.toggleDisable(adFormFieldsets, isDisable);
 
   if (isDisable) {
-    adForm.classList.add(`ad-form--disabled`);
+    adForm.classList.add(window.util.ClassDisabled.AD_FORM);
   } else {
-    adForm.classList.remove(`ad-form--disabled`);
+    adForm.classList.remove(window.util.ClassDisabled.AD_FORM);
   }
 }
 
@@ -41,7 +46,7 @@ function addressFill() {
 
   let offsetY = mainPin.clientHeight;
 
-  if (mapBlock.classList.contains(`map--faded`)) {
+  if (mapBlock.classList.contains(window.util.ClassDisabled.MAP)) {
     offsetY = offsetY / 2;
   }
 
@@ -91,10 +96,10 @@ function submitForm(evt) {
 
   window.data.save(
       new FormData(adForm),
-      function () {
+      () => {
         onSuccessSubmit();
       },
-      function () {
+      () => {
         onErrorSubmit();
       });
 }
@@ -102,11 +107,11 @@ function submitForm(evt) {
 function onSuccessSubmit() {
   window.main.blockState();
 
-  showMessage(`success`);
+  showMessage(MessageType.SUCCESS);
 }
 
 function onErrorSubmit() {
-  showMessage(`error`);
+  showMessage(MessageType.ERROR);
 }
 
 function onClickCloseMessage(evt) {
@@ -124,12 +129,13 @@ function showMessage(type) {
   const message = messageTemplate.cloneNode(true);
 
   mainBlock.appendChild(message);
+  message.focus(); // for Firefox
   document.addEventListener(`click`, onClickCloseMessage);
   document.addEventListener(`keydown`, onEscCloseMessage);
 }
 
 function closeMessage(evt) {
-  const message = document.querySelector(`.success, .error`);
+  const message = document.querySelector(`.${MessageType.SUCCESS}, .${MessageType.ERROR}`);
 
   evt.preventDefault();
 
@@ -159,43 +165,43 @@ function resetForm(evt) {
   window.form.fillAddress();
 }
 
-adForm.addEventListener(`submit`, function (evt) {
+adForm.addEventListener(`submit`, (evt) => {
   submitForm(evt);
 });
 
-resetButton.addEventListener(`click`, function (evt) {
+resetButton.addEventListener(`click`, (evt) => {
   window.main.blockState(evt);
 });
 
-roomNumberSelect.addEventListener(`change`, function () {
+roomNumberSelect.addEventListener(`change`, () => {
   validateCapacity();
 });
 
-capacitySelect.addEventListener(`change`, function () {
+capacitySelect.addEventListener(`change`, () => {
   validateCapacity();
 });
 
-typeSelect.addEventListener(`change`, function () {
+typeSelect.addEventListener(`change`, () => {
   validatePriceInput();
 });
 
-priceInput.addEventListener(`input`, function () {
+priceInput.addEventListener(`input`, () => {
   validatePriceInput();
 });
 
-timeinSelect.addEventListener(`change`, function (evt) {
+timeinSelect.addEventListener(`change`, (evt) => {
   bindTimes(evt);
 });
 
-timeoutSelect.addEventListener(`change`, function (evt) {
+timeoutSelect.addEventListener(`change`, (evt) => {
   bindTimes(evt);
 });
 
-avatarInput.addEventListener(`change`, function () {
+avatarInput.addEventListener(`change`, () => {
   window.previewImage(avatarInput, avatarPreviewBlock);
 });
 
-houseImageInput.addEventListener(`change`, function () {
+houseImageInput.addEventListener(`change`, () => {
   window.previewImage(houseImageInput, houseImagePreviewBlock);
 });
 

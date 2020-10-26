@@ -5,11 +5,11 @@ const mainPin = mapBlock.querySelector(`.map__pin--main`);
 const mapErrorTemplate = document.querySelector(`#map-error`).content.querySelector(`.map-error`);
 
 function unblockDocument() {
-  if (mapBlock.classList.contains(`map--faded`)) {
-    mapBlock.classList.remove(`map--faded`);
+  if (mapBlock.classList.contains(window.util.ClassDisabled.MAP)) {
+    mapBlock.classList.remove(window.util.ClassDisabled.MAP);
 
     window.data.load(
-        function (response) {
+        (response) => {
           const mapErrorMessage = mapBlock.querySelector(`.map-error`);
 
           if (mapErrorMessage) {
@@ -19,7 +19,7 @@ function unblockDocument() {
           window.pin.addOnMap(response);
           window.form.toggleDisable.filters(false);
         },
-        function () {
+        () => {
           const mapErrorMessage = mapErrorTemplate.cloneNode(true);
           const fragment = document.createDocumentFragment();
 
@@ -33,13 +33,13 @@ function unblockDocument() {
 }
 
 function blockDocument(evt) {
-  mapBlock.classList.add(`map--faded`);
+  mapBlock.classList.add(window.util.ClassDisabled.MAP);
   window.form.toggleDisable.adForm(true);
   window.form.toggleDisable.filters(true);
   window.form.reset(evt);
 }
 
-mainPin.addEventListener(`mousedown`, function (evt) {
+mainPin.addEventListener(`mousedown`, (evt) => {
   if (evt.button === 0) {
     evt.preventDefault();
 
@@ -47,7 +47,7 @@ mainPin.addEventListener(`mousedown`, function (evt) {
   }
 });
 
-mainPin.addEventListener(`keydown`, function (evt) {
+mainPin.addEventListener(`keydown`, (evt) => {
   if (evt.key === `Enter`) {
     evt.preventDefault();
 

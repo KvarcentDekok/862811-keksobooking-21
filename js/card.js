@@ -3,6 +3,12 @@
 const HIDDEN_CLASS = `hidden`;
 
 const mapBlock = document.querySelector(`.map`);
+const enTypeToRu = {
+  palace: `Дворец`,
+  flat: `Квартира`,
+  house: `Дом`,
+  bungalow: `Бунгало`
+};
 
 let cardPopup;
 
@@ -103,7 +109,7 @@ function createCard(offer, cardTemplate) {
     field: cardType,
     data: [type],
     cb() {
-      makeType(type, cardType);
+      cardType.textContent = enTypeToRu[type];
     }
   });
 
@@ -160,7 +166,7 @@ function addCard(offer) {
 }
 
 function makeField(options) {
-  const isData = options.data.every(function (value) {
+  const isData = options.data.every((value) => {
     return value;
   });
 
@@ -178,30 +184,16 @@ function makeFeatures(features, cardFeatures) {
 
   for (let i = 0; i < features.length; i++) {
     const feature = document.createElement(`li`);
+    const featureClass = `popup__feature`;
+    const featureClassSpecific = `${featureClass}--${features[i]}`;
 
     feature.textContent = features[i];
-    feature.classList.add(`popup__feature`, `popup__feature--${features[i]}`);
+    feature.classList.add(featureClass, featureClassSpecific);
 
     featuresFragment.appendChild(feature);
   }
 
   cardFeatures.appendChild(featuresFragment);
-}
-
-function makeType(type, cardType) {
-  switch (type) {
-    case `palace`:
-      cardType.textContent = `Дворец`;
-      break;
-    case `flat`:
-      cardType.textContent = `Квартира`;
-      break;
-    case `house`:
-      cardType.textContent = `Дом`;
-      break;
-    case `bungalow`:
-      cardType.textContent = `Бунгало`;
-  }
 }
 
 function showCard(evt, offer) {

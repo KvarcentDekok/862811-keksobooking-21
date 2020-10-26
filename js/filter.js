@@ -4,6 +4,11 @@ const Price = {
   LOW: 10000,
   MIDDLE: 50000
 };
+const PriceLevel = {
+  LOW: `low`,
+  MIDDLE: `middle`,
+  HIGH: `high`
+};
 
 const filtersForm = document.querySelector(`.map__filters`);
 const typeFilter = filtersForm.querySelector(`#housing-type`);
@@ -15,8 +20,8 @@ const featuresFilters = filtersForm.querySelector(`#housing-features`).querySele
 let offersData = [];
 
 function applyFilters(cb) {
-  return function (offers) {
-    const checkedFeatures = Array.from(featuresFilters).filter(function (feature) {
+  return (offers) => {
+    const checkedFeatures = Array.from(featuresFilters).filter((feature) => {
       return feature.checked;
     });
     const filters = {
@@ -25,7 +30,7 @@ function applyFilters(cb) {
       price: priceFilter.value,
       rooms: roomsFilter.value,
       guests: guestsFilter.value,
-      features: checkedFeatures.map(function (feature) {
+      features: checkedFeatures.map((feature) => {
         return feature.value;
       })
     };
@@ -44,7 +49,7 @@ function applyFilters(cb) {
 
 function filterType(offers, filters) {
   if (filters.type !== window.util.CLEAR_FILTER_VALUE) {
-    return offers.filter(function (value) {
+    return offers.filter((value) => {
       return value.offer.type === filters.type;
     });
   }
@@ -54,13 +59,13 @@ function filterType(offers, filters) {
 
 function filterPrice(offers, filters) {
   if (filters.price !== window.util.CLEAR_FILTER_VALUE) {
-    return offers.filter(function (value) {
+    return offers.filter((value) => {
       switch (filters.price) {
-        case `low`:
+        case PriceLevel.LOW:
           return value.offer.price < Price.LOW;
-        case `middle`:
+        case PriceLevel.MIDDLE:
           return value.offer.price >= Price.LOW && value.offer.price < Price.MIDDLE;
-        case `high`:
+        case PriceLevel.HIGH:
           return value.offer.price > Price.MIDDLE;
         default:
           return false;
@@ -73,7 +78,7 @@ function filterPrice(offers, filters) {
 
 function filterRooms(offers, filters) {
   if (filters.rooms !== window.util.CLEAR_FILTER_VALUE) {
-    return offers.filter(function (value) {
+    return offers.filter((value) => {
       return value.offer.rooms === Number(filters.rooms);
     });
   }
@@ -83,7 +88,7 @@ function filterRooms(offers, filters) {
 
 function filterGuests(offers, filters) {
   if (filters.guests !== window.util.CLEAR_FILTER_VALUE) {
-    return offers.filter(function (value) {
+    return offers.filter((value) => {
       return value.offer.guests === Number(filters.guests);
     });
   }
@@ -93,7 +98,7 @@ function filterGuests(offers, filters) {
 
 function filterFeatures(offers, filters) {
   if (filters.features.length) {
-    return offers.filter(function (value) {
+    return offers.filter((value) => {
       let isSuit = true;
 
       for (let i = 0; i < filters.features.length; i++) {
@@ -109,7 +114,7 @@ function filterFeatures(offers, filters) {
   return offers;
 }
 
-filtersForm.addEventListener(`change`, function () {
+filtersForm.addEventListener(`change`, () => {
   window.card.close();
   window.pin.removeFromMap();
   window.pin.addOnMap(offersData);

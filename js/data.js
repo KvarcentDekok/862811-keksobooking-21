@@ -10,28 +10,45 @@ const StatusCode = {
   OK: 200
 };
 
+function onXhrLoad(xhr, options) {
+  const message = `Статус ответа: ${xhr.status} ${xhr.statusText}`;
+
+  if (xhr.status === StatusCode.OK) {
+    options.onLoad(xhr.response);
+  } else {
+    options.onError(message);
+  }
+}
+
+function onXhrError(xhr, options) {
+  const message = `Произошла ошибка соединения: ${xhr.statusText}`;
+
+  options.onError(message);
+}
+
+function onXhrTimeout(xhr, options) {
+  const message = `Запрос не успел выполниться за ${xhr.timeout} мс`;
+
+  options.onError(message);
+}
+
 function sendXhr(options) {
   const xhr = new XMLHttpRequest();
 
   xhr.responseType = `json`;
-
-  xhr.addEventListener(`load`, function () {
-    if (xhr.status === StatusCode.OK) {
-      options.onLoad(xhr.response);
-    } else {
-      options.onError(`Статус ответа: ${xhr.status} ${xhr.statusText}`);
-    }
-  });
-
-  xhr.addEventListener(`error`, function () {
-    options.onError(`Произошла ошибка соединения`);
-  });
-
-  xhr.addEventListener(`timeout`, function () {
-    options.onError(`Запрос не успел выполниться за ${xhr.timeout} мс`);
-  });
-
   xhr.timeout = TIMEOUT_IN_MS;
+
+  xhr.addEventListener(`load`, () => {
+    onXhrLoad(xhr, options);
+  });
+
+  xhr.addEventListener(`error`, () => {
+    onXhrError(xhr, options);
+  });
+
+  xhr.addEventListener(`timeout`, () => {
+    onXhrTimeout(xhr, options);
+  });
 
   xhr.open(options.method, options.URL);
   xhr.send(options.data ? options.data : ``);
