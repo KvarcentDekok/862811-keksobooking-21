@@ -4,29 +4,30 @@ const mapBlock = document.querySelector(`.map`);
 const mainPin = mapBlock.querySelector(`.map__pin--main`);
 const mapErrorTemplate = document.querySelector(`#map-error`).content.querySelector(`.map-error`);
 
+function onDataLoad(response) {
+  const mapErrorMessage = mapBlock.querySelector(`.map-error`);
+
+  if (mapErrorMessage) {
+    mapErrorMessage.remove();
+  }
+
+  window.pin.addOnMap(response);
+  window.form.toggleDisable.filters(false);
+}
+
+function onDataError() {
+  const mapErrorMessage = mapErrorTemplate.cloneNode(true);
+  const fragment = document.createDocumentFragment();
+
+  fragment.appendChild(mapErrorMessage);
+  mapBlock.appendChild(fragment);
+}
+
 function unblockDocument() {
   if (mapBlock.classList.contains(window.util.ClassDisabled.MAP)) {
     mapBlock.classList.remove(window.util.ClassDisabled.MAP);
 
-    window.data.load(
-        (response) => {
-          const mapErrorMessage = mapBlock.querySelector(`.map-error`);
-
-          if (mapErrorMessage) {
-            mapErrorMessage.remove();
-          }
-
-          window.pin.addOnMap(response);
-          window.form.toggleDisable.filters(false);
-        },
-        () => {
-          const mapErrorMessage = mapErrorTemplate.cloneNode(true);
-          const fragment = document.createDocumentFragment();
-
-          fragment.appendChild(mapErrorMessage);
-          mapBlock.appendChild(fragment);
-        }
-    );
+    window.data.load(onDataLoad, onDataError);
 
     window.form.toggleDisable.adForm(false);
   }

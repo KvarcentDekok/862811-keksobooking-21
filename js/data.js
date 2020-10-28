@@ -1,7 +1,5 @@
 "use strict";
 
-const LOCATION_Y_MIN = 130;
-const LOCATION_Y_MAX = 630;
 const LOAD_URL = `https://21.javascript.pages.academy/keksobooking/data`;
 const SAVE_URL = `https://21.javascript.pages.academy/keksobooking`;
 const TIMEOUT_IN_MS = 10000;
@@ -75,9 +73,5 @@ function saveData(data, onLoad, onError) {
 
 window.data = {
   save: saveData,
-  load: loadData,
-  locationY: {
-    min: LOCATION_Y_MIN,
-    max: LOCATION_Y_MAX
-  }
+  load: loadData
 };

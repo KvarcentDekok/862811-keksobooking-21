@@ -2,6 +2,8 @@
 
 const COUNT_PINS_MAX = 5;
 const VALUE_CLEAR_FILTER = `any`;
+const LOCATION_Y_MIN = 130;
+const LOCATION_Y_MAX = 630;
 
 const HTMLClassDisabled = {
   AD_FORM: `ad-form--disabled`,
@@ -45,6 +47,10 @@ function toggleDisableState(elements, isDisable) {
 window.util = {
   MAX_PINS_COUNT: COUNT_PINS_MAX,
   CLEAR_FILTER_VALUE: VALUE_CLEAR_FILTER,
+  locationY: {
+    min: LOCATION_Y_MIN,
+    max: LOCATION_Y_MAX
+  },
   ClassDisabled: HTMLClassDisabled,
   getRandomInt: getRandomInteger,
   getRandomElem: getRandomElement,

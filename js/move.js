@@ -4,8 +4,8 @@ const mapBlock = document.querySelector(`.map`);
 const mainPin = mapBlock.querySelector(`.map__pin--main`);
 const locationXMin = -(mainPin.clientWidth / 2);
 const locationXMax = mapBlock.clientWidth - (mainPin.clientWidth / 2);
-const locationYMin = window.data.locationY.min - mainPin.clientHeight;
-const locationYMax = window.data.locationY.max - mainPin.clientHeight;
+const locationYMin = window.util.locationY.min - mainPin.clientHeight;
+const locationYMax = window.util.locationY.max - mainPin.clientHeight;
 
 let onMouseMove;
 

@@ -94,14 +94,7 @@ function bindTimes(evt) {
 function submitForm(evt) {
   evt.preventDefault();
 
-  window.data.save(
-      new FormData(adForm),
-      () => {
-        onSuccessSubmit();
-      },
-      () => {
-        onErrorSubmit();
-      });
+  window.data.save(new FormData(adForm), onSuccessSubmit, onErrorSubmit);
 }
 
 function onSuccessSubmit() {
