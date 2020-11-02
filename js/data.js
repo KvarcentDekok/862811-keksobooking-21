@@ -8,7 +8,7 @@ const StatusCode = {
   OK: 200
 };
 
-function onXhrLoad(xhr, options) {
+const onXhrLoad = (xhr, options) => {
   const message = `Статус ответа: ${xhr.status} ${xhr.statusText}`;
 
   if (xhr.status === StatusCode.OK) {
@@ -16,21 +16,21 @@ function onXhrLoad(xhr, options) {
   } else {
     options.onError(message);
   }
-}
+};
 
-function onXhrError(xhr, options) {
+const onXhrError = (xhr, options) => {
   const message = `Произошла ошибка соединения: ${xhr.statusText}`;
 
   options.onError(message);
-}
+};
 
-function onXhrTimeout(xhr, options) {
+const onXhrTimeout = (xhr, options) => {
   const message = `Запрос не успел выполниться за ${xhr.timeout} мс`;
 
   options.onError(message);
-}
+};
 
-function sendXhr(options) {
+const sendXhr = (options) => {
   const xhr = new XMLHttpRequest();
 
   xhr.responseType = `json`;
@@ -50,18 +50,18 @@ function sendXhr(options) {
 
   xhr.open(options.method, options.URL);
   xhr.send(options.data ? options.data : ``);
-}
+};
 
-function loadData(onLoad, onError) {
+const loadData = (onLoad, onError) => {
   sendXhr({
     onLoad,
     onError,
     method: `GET`,
     URL: LOAD_URL
   });
-}
+};
 
-function saveData(data, onLoad, onError) {
+const saveData = (data, onLoad, onError) => {
   sendXhr({
     onLoad,
     onError,
@@ -69,7 +69,7 @@ function saveData(data, onLoad, onError) {
     URL: SAVE_URL,
     data
   });
-}
+};
 
 window.data = {
   save: saveData,

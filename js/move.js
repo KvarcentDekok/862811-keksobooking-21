@@ -9,7 +9,7 @@ const locationYMax = window.util.locationY.max - mainPin.clientHeight;
 
 let onMouseMove;
 
-function movePin(startCoords, evt) {
+const movePin = (startCoords, evt) => {
   evt.preventDefault();
 
   const shift = {
@@ -28,18 +28,18 @@ function movePin(startCoords, evt) {
   mainPin.style.left = newCoords.x + `px`;
 
   window.form.fillAddress();
-}
+};
 
-function onMouseUp(evt) {
+const onMouseUp = (evt) => {
   evt.preventDefault();
 
   window.form.fillAddress();
 
   document.removeEventListener(`mousemove`, onMouseMove);
   document.removeEventListener(`mouseup`, onMouseUp);
-}
+};
 
-function restrictMovement(newCoords, startCoords, axis, moveEvt) {
+const restrictMovement = (newCoords, startCoords, axis, moveEvt) => {
   let min;
   let max;
   let evtCoords;
@@ -65,9 +65,9 @@ function restrictMovement(newCoords, startCoords, axis, moveEvt) {
   if (newCoords[axis] > max) {
     newCoords[axis] = max;
   }
-}
+};
 
-function initMovePin(evt) {
+const initMovePin = (evt) => {
   if (evt.button === 0) {
     let startCoords = {
       x: evt.clientX,
@@ -82,7 +82,7 @@ function initMovePin(evt) {
 
     document.addEventListener(`mouseup`, onMouseUp);
   }
-}
+};
 
 mainPin.addEventListener(`mousedown`, (evt) => {
   initMovePin(evt);

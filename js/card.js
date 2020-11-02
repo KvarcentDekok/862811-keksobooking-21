@@ -12,29 +12,29 @@ const enTypeToRu = {
 
 let cardPopup;
 
-function onCardEscPress(evt) {
+const onCardEscPress = (evt) => {
   if (evt.key === `Escape`) {
     evt.preventDefault();
 
     closeCard();
   }
-}
+};
 
-function onCardCloseClick(evt) {
+const onCardCloseClick = (evt) => {
   evt.preventDefault();
 
   closeCard();
-}
+};
 
-function closeCard() {
+const closeCard = () => {
   if (cardPopup) {
     cardPopup.remove();
     document.removeEventListener(`keydown`, onCardEscPress);
     window.pin.makeInactive();
   }
-}
+};
 
-function createCard(offer, cardTemplate) {
+const createCard = (offer, cardTemplate) => {
   const cardElement = cardTemplate.cloneNode(true);
   const cardTitle = cardElement.querySelector(`.popup__title`);
   const cardAddress = cardElement.querySelector(`.popup__text--address`);
@@ -135,17 +135,17 @@ function createCard(offer, cardTemplate) {
   document.addEventListener(`keydown`, onCardEscPress);
 
   return cardElement;
-}
+};
 
-function createPhoto(src, photoTemplate) {
+const createPhoto = (src, photoTemplate) => {
   const photoElement = photoTemplate.cloneNode(true);
 
   photoElement.src = src;
 
   return photoElement;
-}
+};
 
-function addPhotos(photos, cardPhotos) {
+const addPhotos = (photos, cardPhotos) => {
   const photoTemplate = cardPhotos.querySelector(`.popup__photo`);
   const photosFragment = document.createDocumentFragment();
 
@@ -156,16 +156,16 @@ function addPhotos(photos, cardPhotos) {
   }
 
   cardPhotos.appendChild(photosFragment);
-}
+};
 
-function addCard(offer) {
+const addCard = (offer) => {
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
   const filtersContainer = mapBlock.querySelector(`.map__filters-container`);
 
   mapBlock.insertBefore(createCard(offer, cardTemplate), filtersContainer);
-}
+};
 
-function makeField(options) {
+const makeField = (options) => {
   const isData = options.data.every((value) => {
     return value;
   });
@@ -175,9 +175,9 @@ function makeField(options) {
   } else {
     options.field.classList.add(HIDDEN_CLASS);
   }
-}
+};
 
-function makeFeatures(features, cardFeatures) {
+const makeFeatures = (features, cardFeatures) => {
   const featuresFragment = document.createDocumentFragment();
 
   cardFeatures.innerHTML = ``;
@@ -194,9 +194,9 @@ function makeFeatures(features, cardFeatures) {
   }
 
   cardFeatures.appendChild(featuresFragment);
-}
+};
 
-function showCard(evt, offer) {
+const showCard = (evt, offer) => {
   evt.preventDefault();
 
   if (cardPopup) {
@@ -204,7 +204,7 @@ function showCard(evt, offer) {
   }
 
   addCard(offer);
-}
+};
 
 window.card = {
   show: showCard,

@@ -10,17 +10,17 @@ const HTMLClassDisabled = {
   MAP: `map--faded`
 };
 
-function getRandomInteger(min, max) {
+const getRandomInteger = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+};
 
-function getRandomElement(array) {
+const getRandomElement = (array) => {
   return array[window.util.getRandomInt(0, array.length - 1)];
-}
+};
 
-function getRandomArray(array, length) {
+const getRandomArray = (array, length) => {
   let result = [];
 
   for (let i = 0; i < length; i++) {
@@ -32,9 +32,9 @@ function getRandomArray(array, length) {
   }
 
   return result;
-}
+};
 
-function toggleDisableState(elements, isDisable) {
+const toggleDisableState = (elements, isDisable) => {
   if (typeof elements === `object`) {
     for (let i = 0; i < elements.length; i++) {
       elements[i].disabled = isDisable;
@@ -42,7 +42,7 @@ function toggleDisableState(elements, isDisable) {
   } else {
     elements.disabled = isDisable;
   }
-}
+};
 
 window.util = {
   MAX_PINS_COUNT: COUNT_PINS_MAX,

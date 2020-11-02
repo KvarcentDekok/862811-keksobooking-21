@@ -19,7 +19,7 @@ const featuresFilters = filtersForm.querySelector(`#housing-features`).querySele
 
 let offersData = [];
 
-function applyFilters(cb) {
+const applyFilters = (cb) => {
   return (offers) => {
     const checkedFeatures = Array.from(featuresFilters).filter((feature) => {
       return feature.checked;
@@ -45,9 +45,9 @@ function applyFilters(cb) {
 
     cb(offers, filters.pinsCount);
   };
-}
+};
 
-function filterType(offers, filters) {
+const filterType = (offers, filters) => {
   if (filters.type !== window.util.CLEAR_FILTER_VALUE) {
     return offers.filter((value) => {
       return value.offer.type === filters.type;
@@ -55,9 +55,9 @@ function filterType(offers, filters) {
   }
 
   return offers;
-}
+};
 
-function filterPrice(offers, filters) {
+const filterPrice = (offers, filters) => {
   if (filters.price !== window.util.CLEAR_FILTER_VALUE) {
     return offers.filter((value) => {
       switch (filters.price) {
@@ -74,9 +74,9 @@ function filterPrice(offers, filters) {
   }
 
   return offers;
-}
+};
 
-function filterRooms(offers, filters) {
+const filterRooms = (offers, filters) => {
   if (filters.rooms !== window.util.CLEAR_FILTER_VALUE) {
     return offers.filter((value) => {
       return value.offer.rooms === Number(filters.rooms);
@@ -84,9 +84,9 @@ function filterRooms(offers, filters) {
   }
 
   return offers;
-}
+};
 
-function filterGuests(offers, filters) {
+const filterGuests = (offers, filters) => {
   if (filters.guests !== window.util.CLEAR_FILTER_VALUE) {
     return offers.filter((value) => {
       return value.offer.guests === Number(filters.guests);
@@ -94,9 +94,9 @@ function filterGuests(offers, filters) {
   }
 
   return offers;
-}
+};
 
-function filterFeatures(offers, filters) {
+const filterFeatures = (offers, filters) => {
   if (filters.features.length) {
     return offers.filter((value) => {
       let isSuit = true;
@@ -112,7 +112,7 @@ function filterFeatures(offers, filters) {
   }
 
   return offers;
-}
+};
 
 filtersForm.addEventListener(`change`, () => {
   window.card.close();

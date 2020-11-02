@@ -4,7 +4,7 @@ const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
 const UPLOAD_PHOTO_ALT = `Загруженное фото`;
 const imgTemplate = document.querySelector(`.ad-form-header__preview img`);
 
-function onReaderLoad(previewBlock, reader) {
+const onReaderLoad = (previewBlock, reader) => {
   const preview = imgTemplate.cloneNode();
   const fragment = document.createDocumentFragment();
 
@@ -14,9 +14,9 @@ function onReaderLoad(previewBlock, reader) {
   fragment.appendChild(preview);
 
   previewBlock.appendChild(fragment);
-}
+};
 
-function changeImage(fileChooser, previewBlock) {
+const changeImage = (fileChooser, previewBlock) => {
   const file = fileChooser.files[0];
 
   previewBlock.innerHTML = ``;
@@ -40,6 +40,6 @@ function changeImage(fileChooser, previewBlock) {
       fileChooser.value = ``;
     }
   }
-}
+};
 
 window.previewImage = changeImage;

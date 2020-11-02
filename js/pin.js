@@ -7,21 +7,21 @@ const ACTIVE_PIN_CLASS = `map__pin--active`;
 const mapBlock = document.querySelector(`.map`);
 const mapPinsBlock = mapBlock.querySelector(`.map__pins`);
 
-function makePinActive(pin) {
+const makePinActive = (pin) => {
   makePinInactive();
 
   pin.classList.add(ACTIVE_PIN_CLASS);
-}
+};
 
-function makePinInactive() {
+const makePinInactive = () => {
   const currentActivePin = mapPinsBlock.querySelector(`.${ACTIVE_PIN_CLASS}`);
 
   if (currentActivePin) {
     currentActivePin.classList.remove(ACTIVE_PIN_CLASS);
   }
-}
+};
 
-function createPin(offer, pinTemplate) {
+const createPin = (offer, pinTemplate) => {
   const pinElement = pinTemplate.cloneNode(true);
   const pinAvatar = pinElement.querySelector(`img`);
 
@@ -36,9 +36,9 @@ function createPin(offer, pinTemplate) {
   });
 
   return pinElement;
-}
+};
 
-function addPins(offers, pinsCount) {
+const addPins = (offers, pinsCount) => {
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
   const pinsFragment = document.createDocumentFragment();
 
@@ -53,15 +53,15 @@ function addPins(offers, pinsCount) {
   }
 
   mapPinsBlock.appendChild(pinsFragment);
-}
+};
 
-function removePins() {
+const removePins = () => {
   const pins = mapPinsBlock.querySelectorAll(`.map__pin:not(.map__pin--main)`);
 
-  for (let i = 0; i < pins.length; i++) {
-    pins[i].remove();
-  }
-}
+  pins.forEach((el) => {
+    el.remove();
+  });
+};
 
 window.pin = {
   addOnMap: window.debounce(window.filter(addPins)),

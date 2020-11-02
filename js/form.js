@@ -27,7 +27,7 @@ const filters = filtersForm.querySelectorAll(`select, fieldset`);
 const mainPinLeft = mainPin.style.left;
 const mainPinTop = mainPin.style.top;
 
-function toggleAdFormDisable(isDisable) {
+const toggleAdFormDisable = (isDisable) => {
   window.util.toggleDisable(adFormFieldsets, isDisable);
 
   if (isDisable) {
@@ -35,13 +35,13 @@ function toggleAdFormDisable(isDisable) {
   } else {
     adForm.classList.remove(window.util.ClassDisabled.AD_FORM);
   }
-}
+};
 
-function toggleFiltersDisable(isDisable) {
+const toggleFiltersDisable = (isDisable) => {
   window.util.toggleDisable(filters, isDisable);
-}
+};
 
-function addressFill() {
+const addressFill = () => {
   const offsetX = mainPin.clientWidth / 2;
 
   let offsetY = mainPin.clientHeight;
@@ -54,9 +54,9 @@ function addressFill() {
   let pinY = Math.round(parseInt(mainPin.style.top, 10) + offsetY);
 
   addressInput.value = `${pinX}, ${pinY}`;
-}
+};
 
-function validateCapacity() {
+const validateCapacity = () => {
   const selectedOption = roomNumberSelect.options[roomNumberSelect.selectedIndex];
   const validCapacityNumbers = selectedOption.dataset.valid.split(`, `);
 
@@ -69,9 +69,9 @@ function validateCapacity() {
   }
 
   capacitySelect.reportValidity();
-}
+};
 
-function validatePriceInput() {
+const validatePriceInput = () => {
   const selectedOption = typeSelect.options[typeSelect.selectedIndex];
   const validMinPrice = selectedOption.dataset.valid;
 
@@ -81,43 +81,43 @@ function validatePriceInput() {
   if (!priceInput.validity.valid && !priceInput.validity.valueMissing) {
     priceInput.reportValidity();
   }
-}
+};
 
-function bindTimes(evt) {
+const bindTimes = (evt) => {
   if (evt.target === timeinSelect) {
     timeoutSelect.value = timeinSelect.value;
   } else if (evt.target === timeoutSelect) {
     timeinSelect.value = timeoutSelect.value;
   }
-}
+};
 
-function submitForm(evt) {
+const submitForm = (evt) => {
   evt.preventDefault();
 
   window.data.save(new FormData(adForm), onSuccessSubmit, onErrorSubmit);
-}
+};
 
-function onSuccessSubmit() {
+const onSuccessSubmit = () => {
   window.main.blockState();
 
   showMessage(MessageType.SUCCESS);
-}
+};
 
-function onErrorSubmit() {
+const onErrorSubmit = () => {
   showMessage(MessageType.ERROR);
-}
+};
 
-function onClickCloseMessage(evt) {
+const onClickCloseMessage = (evt) => {
   closeMessage(evt);
-}
+};
 
-function onEscCloseMessage(evt) {
+const onEscCloseMessage = (evt) => {
   if (evt.key === `Escape`) {
     closeMessage(evt);
   }
-}
+};
 
-function showMessage(type) {
+const showMessage = (type) => {
   const messageTemplate = document.querySelector(`#${type}`).content.querySelector(`.${type}`);
   const message = messageTemplate.cloneNode(true);
 
@@ -125,9 +125,9 @@ function showMessage(type) {
   message.focus(); // for Firefox
   document.addEventListener(`click`, onClickCloseMessage);
   document.addEventListener(`keydown`, onEscCloseMessage);
-}
+};
 
-function closeMessage(evt) {
+const closeMessage = (evt) => {
   const message = document.querySelector(`.${MessageType.SUCCESS}, .${MessageType.ERROR}`);
 
   evt.preventDefault();
@@ -136,9 +136,9 @@ function closeMessage(evt) {
 
   document.removeEventListener(`click`, onClickCloseMessage);
   document.removeEventListener(`keydown`, onEscCloseMessage);
-}
+};
 
-function resetForm(evt) {
+const resetForm = (evt) => {
   if (evt) {
     evt.preventDefault();
   }
@@ -156,7 +156,7 @@ function resetForm(evt) {
   houseImagePreviewBlock.innerHTML = ``;
 
   window.form.fillAddress();
-}
+};
 
 adForm.addEventListener(`submit`, (evt) => {
   submitForm(evt);

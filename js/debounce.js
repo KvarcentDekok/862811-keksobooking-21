@@ -2,7 +2,7 @@
 
 const DEBOUNCE_INTERVAL = 500;
 
-function debounceFunc(cb) {
+const debounceFunc = (cb) => {
   let lastTimeout = null;
 
   return (...args) => {
@@ -14,6 +14,6 @@ function debounceFunc(cb) {
       cb(...args);
     }, DEBOUNCE_INTERVAL);
   };
-}
+};
 
 window.debounce = debounceFunc;
